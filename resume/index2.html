@@ -4,14 +4,58 @@
 	<meta charset="UTF-8">
 	<title>resume</title>
 	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="ds/css/bootstrap.css">
 	<script src = 'js/jquery-3.1.1.js'></script>
 	<script src = 'js/tools.js'></script>
 	<script src="js/miaov-transform.js"></script>
 </head>
 <body>
+	<header id="header">
+		<a class="log" href="index2.html">
+			<img src="img/logo_color_476_180.jpg" alt="">
+		</a>
+		<div class="menu">
+			<div class="ico">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<p>MENU</p>
+		</div>
+	</header>
 	<section id="mainImagArea">
 		<div class="mainImage bg"></div>
 		<div class="mainImage face"></div>
+	</section>
+	<section id="centerBox">
+		<div id="tabBtn">
+			<div class="leftBtn btn btnLeftIco btnIco">
+				<div class="mask"></div>
+			</div>
+			<div class="rightBtn btn btnRightIco btnIco">
+				<div class="mask"></div>
+			</div>
+		</div>
+		<div id="infor">
+			<div class="spanBox">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<h1 id="title">HTML</h1>
+			<section id="intro">
+				<span class="joinIco">
+					<span class="mask"></span>
+					<i></i>
+					<i></i>
+				</span>
+				<p>Dramatically improves business performance outcomes by effectively leveraging people, processes, and technology</p>
+			</section>
+		</div>
 	</section>
 	<script>
 		(function () {
@@ -29,7 +73,26 @@
 						],
 					len: 12,
 					bgSize: [1920, 1200],
-					bgRota: 1920 / 1200
+					bgRota: 1920 / 1200,
+					hideFn: function () {
+						return false;
+					},
+					showFn: function () {
+						return false;
+					},
+					isReady: false,
+					title: [
+						'HTML',
+						'css',
+						'JavaScript',
+						'Canvas'
+					],
+					infor: [
+						'At Adison Partners, we know what uncommon talent looks like',
+						'We are the ONLY retained firm that truly bets on our performance',
+						'Dramatically improves business performance outcomes by effectively leveraging people, processes, and technology',
+						'‘Disruptive Talent’ describes the brilliant individuals who think and act differently'
+					]
 				};
 				this.init();
 			}
@@ -40,9 +103,11 @@
 						this.setting[attr] = json[attr];
 					}
 				},
-				setPos: function () {
+				setPos: function (fn) {
+					console.log(fn);
 					this.setLayOut(this.bg);
 					this.setLayOut(this.face);
+					fn && fn(this.setting.title[0],this.setting.infor[0])
 				},
 				rePos: function () {
 					this.setStyle(this.bg);
@@ -81,13 +146,14 @@
 						})
 					})
 				},
-				setData: function () {
-					
-				},
 				autoPlay: function () {
-					
+					var _this = this;
+					this.timer = setInterval(function () {
+						_this.next();
+					}, 5000)
 				},
 				next: function () {
+					// this.setting.isReady = false;
 					this.nowIndex ++;
 					this.nowIndex %= this.setting.data.length;
 					this.face.find('div').css({
@@ -95,16 +161,31 @@
 					});
 					this.showImage();
 				},
+				prev: function () {
+					this.nowIndex --;
+					if (this.nowIndex < 0) {
+						this.nowIndex = this.setting.data.length-1;
+					}
+					console.log(this.nowIndex)
+					this.face.find('div').css({
+						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
+					});
+					this.showImage();
+				},
 				hideImage: function () {
-					console.log(1)
 					this.face.find('div').each(function(i, e){
 						dir = i%2 == 0 ? 1 : -1;
 						$(e).css ({
-							top:( dir * (tools.winSize().h * 0.4) * i/12 + dir * (tools.winSize().h * 0.3))
+							top:( dir * (tools.winSize().h * 0.4) * i/12 + dir * (tools.winSize().h * 0.2))
 						})
-					})
+					});
+					this.setting.showFn && this.setting.showFn();
+				},
+				isReady: function () {
+					return this.setting.isReady;
 				},
 				showImage: function () {
+					this.setting.isReady = true;
 					var _this = this;
 					this.face.find('div').each(function (i, e) {
 						setTimeout(function (i) {
@@ -116,6 +197,8 @@
 										'opacity': 1,
 									});
 									$('.bg div').css('background-image', $('.face div').eq(0).css('background-image'));
+
+									_this.setting.isReady = false;
 								}
 								if (i == 0) {
 									$('.bg').animate ({
@@ -123,25 +206,103 @@
 									});
 								}
 							});
-						}, i*50, i);
+						}, i*70, i);
 					});
+					console.log(_this.setting.title[_this.nowIndex]);
+					_this.setting.hideFn && _this.setting.hideFn(_this.setting.title[_this.nowIndex],_this.setting.infor[_this.nowIndex]);
 				},
-				prev: function () {
-					
-				},
-				changImage: function () {
-					
+				clearTimer: function () {
+					clearInterval(this.timer);
 				}
 
+			};
+
+			function IntroBox (selector) {
+				this.obj = $(selector);
+				this.spanBox = this.obj.find('span');
 			}
+
+			IntroBox.prototype = {
+				constructor: IntroBox,
+				inite: function () {
+				},
+				showBox: function () {
+					this.obj.fadeIn(300);
+					this.spanBox.each(function (i, e) {
+						$(e).attr({
+							style: ''
+						})
+					})
+				},
+				hideBox: function () {
+					this.obj.fadeOut(800);
+					this.spanBox.each(function (i, e) {
+						$(e).width(0);
+						$(e).height(0);
+					})
+				}
+			}
+
 			var setImage = new setMainImage('#mainImagArea');
-			setImage.setPos();
+			var mainIntroBox = new IntroBox('.spanBox');
+			/*var title = [
+						'HTML',
+						'css',
+						'JavaScript',
+						'Canvas'
+					];*/
+			setImage.init ({
+				showFn: function (title) {
+					mainIntroBox.showBox();
+					$('#title').fadeIn(800);
+					$('#intro').fadeIn(800);
+				},
+				hideFn: function (title, infor) {
+					mainIntroBox.hideBox();
+					$('#title').fadeOut(800, function () {
+						$('#title').html(title);
+					});
+					$('#intro').fadeOut(800, function () {
+						$('#intro p').html(infor)
+					});
+				}
+			})
+			setImage.setPos(function (title, infor) {
+				$('#title').html(title);
+				$('#intro p').html(infor)
+			});
+			setImage.autoPlay();
 			window.onresize = function () {
 				setImage.rePos();
 			}
-			document.onclick = function () {
+			/*document.onclick = function () {
 				setImage.next();
+				// mainIntroBox.hideBox();
+			}*/
+
+			$('.rightBtn').click(function () {
+				if(setImage.isReady()){
+					return false;
+				};
+				setImage.clearTimer();
+				setImage.next();
+				setImage.autoPlay();
+			});
+			$('.leftBtn').click(function () {
+				if(setImage.isReady()){
+					return false;
+				};
+				setImage.clearTimer();
+				setImage.prev();
+				setImage.autoPlay();
+			});
+			centerBox.onclick = function (ev) {
+				ev.cancelBubble = true;
+				// mainIntroBox.showBox();
 			}
+
+
+
 		})()
 	</script>
 </body>

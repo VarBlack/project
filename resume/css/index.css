@@ -51,8 +51,69 @@ html {
   font-size: 14px;
   font-family: Helvetica; }
 
-#mainImagArea {
+.btnIco:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  margin: auto;
+  width: 10px;
+  height: 17px;
+  vertical-align: 1px;
+  background: url("../img/btnIco.png") no-repeat; }
+
+.btnLeftIco:before {
+  background-position: 0 0; }
+
+.btnRightIco:before {
+  background-position: 0 -17px; }
+
+#header {
   position: relative;
+  padding: 30px 30px 0 0;
+  z-index: 5; }
+  #header .log {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    float: left;
+    width: 238px;
+    height: 93px; }
+    #header .log img {
+      width: 100%; }
+  #header .menu {
+    float: right;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #5634d1;
+    box-sizing: border-box;
+    padding: 12px 9px 0;
+    cursor: pointer; }
+    #header .menu span {
+      display: block;
+      border-top: 2px solid #fff;
+      height: 5px; }
+    #header .menu p {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      font-size: 12px;
+      line-height: 24px;
+      font-weight: 600;
+      color: #5634d1;
+      text-transform: uppercase;
+      text-align: center; }
+
+#mainImagArea {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%; }
   #mainImagArea .mainImage {
@@ -76,5 +137,256 @@ html {
     z-index: -1; }
   #mainImagArea .face div {
     opacity: 0; }
+
+#centerBox {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  max-width: 1100px;
+  margin: 0 auto;
+  z-index: 2; }
+
+#infor {
+  height: 141px;
+  position: relative; }
+  #infor h1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 141px;
+    font-size: 100px;
+    color: #28dde0;
+    letter-spacing: 8px; }
+
+#intro {
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  padding: 15px 38px 15px 60px;
+  box-sizing: border-box;
+  width: 46%;
+  font-size: 16px;
+  line-height: 120%;
+  color: #fff;
+  background: rgba(40, 221, 224, 0.8);
+  cursor: pointer; }
+
+#intro:hover i {
+  background: rgba(40, 221, 224, 0.8); }
+
+#intro:hover .mask {
+  transform: scale(0); }
+
+.joinIco {
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  left: 13px;
+  bottom: 0;
+  top: 0;
+  margin: auto 0;
+  border-radius: 50%;
+  line-height: 25px; }
+  .joinIco .mask {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    transition: 0.5s;
+    background: rgba(40, 221, 224, 0.8);
+    border-radius: 50%;
+    transform: scale(0.9); }
+  .joinIco i {
+    position: absolute;
+    top: 17px;
+    left: 8px;
+    z-index: 5;
+    width: 20px;
+    height: 2px;
+    background: #fff; }
+  .joinIco i:nth-child(2) {
+    transform: rotate(90deg); }
+
+#tabBtn {
+  width: 100%;
+  height: 75px;
+  box-sizing: border-box;
+  padding: 20px 5%;
+  overflow: hidden; }
+  #tabBtn .btn {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    font-size: 30px;
+    border-radius: 50%;
+    background: #5634d1;
+    color: #fff;
+    line-height: 35px;
+    cursor: pointer; }
+    #tabBtn .btn .mask {
+      transition: 0.3s;
+      position: absolute;
+      background: #28dde0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      margin: -1px; }
+  #tabBtn .btn:hover .mask {
+    transform: scale(0); }
+  #tabBtn .leftBtn {
+    float: left; }
+  #tabBtn .rightBtn {
+    float: right; }
+
+.spanBox {
+  width: 100%;
+  height: 100%;
+  position: relative; }
+  .spanBox span {
+    position: absolute;
+    transition: 0.4s;
+    background: rgba(255, 255, 255, 0.6); }
+  .spanBox span:nth-child(1) {
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    margin-left: -8px; }
+  .spanBox span:nth-child(2) {
+    bottom: 0;
+    left: 0;
+    width: 25%;
+    height: 8px;
+    transition-delay: 0.15s; }
+  .spanBox span:nth-child(3) {
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 8px;
+    transition-delay: 0.15s; }
+  .spanBox span:nth-child(4) {
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    margin-right: -8px; }
+  .spanBox span:nth-child(5) {
+    top: 0;
+    right: 0;
+    width: 25%;
+    height: 8px;
+    transition-delay: 0.1s; }
+  .spanBox span:nth-child(6) {
+    top: 0;
+    left: 50%;
+    transform: translateX(-100%);
+    width: 50%;
+    height: 8px;
+    transition-delay: 0.2s; }
+
+@media screen and (max-width: 1410px) {
+  #header .log {
+    max-width: 180px;
+    width: 40%;
+    height: 70px; }
+
+  #centerBox {
+    width: 800px; }
+    #centerBox #infor {
+      height: 95px; }
+    #centerBox h1 {
+      font-size: 70px;
+      line-height: 95px; }
+
+  #intro {
+    width: 320px;
+    font-size: 15px; }
+
+  .spanBox span {
+    position: absolute;
+    transition: 0.5s linear;
+    background: rgba(255, 255, 255, 0.6); }
+  .spanBox span:nth-child(1) {
+    width: 6px;
+    margin-left: -6px;
+    /*transition-delay: 1s;*/ }
+  .spanBox span:nth-child(2) {
+    height: 6px;
+    width: 30%;
+    /*transition-delay: 1.5s;*/ }
+  .spanBox span:nth-child(3) {
+    height: 6px;
+    /*transition-delay: 2s;*/ }
+  .spanBox span:nth-child(4) {
+    width: 6px;
+    margin-right: -6px; }
+  .spanBox span:nth-child(5) {
+    width: 30%;
+    height: 6px; }
+  .spanBox span:nth-child(6) {
+    transform: translateX(-100%);
+    height: 6px; } }
+@media screen and (max-width: 1000px) {
+  #centerBox {
+    width: 80%;
+    /*  #infor {
+    	height: 75px;
+    } */ }
+    #centerBox h1 {
+      font-size: 50px;
+      line-height: 95px; }
+
+  #intro {
+    left: 0;
+    margin-left: 30%;
+    width: 65%; } }
+@media screen and (max-width: 760px) {
+  #header .log {
+    top: 15px;
+    left: 15px; }
+
+  #centerBox #infor {
+    height: 75px; }
+  #centerBox h1 {
+    font-size: 50px;
+    line-height: 75px; }
+
+  #intro {
+    left: 0;
+    margin-left: 10%;
+    width: 85%; } }
+@media screen and (max-width: 460px) {
+  #header .log {
+    height: 70px; }
+
+  #centerBox #infor {
+    height: 75px; }
+  #centerBox h1 {
+    letter-spacing: 2px;
+    font-size: 40px; }
+
+  #intro {
+    left: 50%;
+    margin-left: -16px;
+    margin-top: 36px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    padding: 0; }
+    #intro .joinIco {
+      left: 0; }
+    #intro .mask {
+      transform: scale(1.6); }
+    #intro p {
+      display: none; } }
 
 /*# sourceMappingURL=index.css.map */
