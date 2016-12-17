@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#wrap {
+			width: 1000px;
+			height: 200px;
+			border: 1px solid black;
+			position: relative;
+		}
+		span {
+			position: absolute;
+			transition: 1s linear;
+			background: black;
+		}
+		#wrap span:nth-child(1) {
+			top: 0; left: 0;
+			width: 5px;
+			height: 100%;
+			/*transition-delay: 1s;*/
+		}
+		#wrap span:nth-child(2) {
+			bottom: 0; left: 0;
+			width: 25%;
+			height: 5px;
+			/*transition-delay: 1.5s;*/
+		}
+		#wrap span:nth-child(3) {
+			bottom: 0; right: 0;
+			width: 50%;
+			height: 5px;
+			/*transition-delay: 2s;*/
+		}
+		#wrap span:nth-child(4) {
+			top: 0; right: 0;
+			width: 5px;
+			height: 100%;
+		}
+		#wrap span:nth-child(5) {
+			top: 0; right: 0;
+			width: 25%;
+			height: 5px;
+		}
+		#wrap span:nth-child(6) {
+			top: 0; left: 50%;
+			transform: translateX(-100%);
+			width: 50%;
+			height: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	<script>
+		function spanBox () {
+			this.data = [
+				{
+
+				}
+			]
+		}
+			var spans = document.getElementsByTagName('span');
+		document.onclick = function () {
+			for (var i = 0; i < spans.length; i++) {
+				spans[i].style.width = 0;
+				spans[i].style.height = 0;
+			}
+		}
+		wrap.onclick = function (ev) {
+			ev.cancelBubble = true;
+
+			for (var i = 0; i < spans.length; i++) {
+				spans[i].style = '';
+			}
+		}
+	</script>
+</body>
+</html>

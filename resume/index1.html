@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>resume</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src = 'js/jquery-3.1.1.js'></script>
+	<script src = 'js/tools.js'></script>
+	<script src="js/miaov-transform.js"></script>
+</head>
+<body>
+	<section id="mainImagArea">
+		<div class="mainImage bg"></div>
+		<div class="mainImage face"></div>
+	</section>
+	<script>
+		(function () {
+			function setMainImage (id) {
+				this.obj = $('#'+id);
+				this.imgArea = this.obj.find('.mainImage');
+				this.nowIndex = 1;
+				this.setting = {
+					data: [
+						'img/glasses_guy.jpg',
+						'img/aa_woman.jpg',
+						'img/young_girl.jpg',
+						'img/indian_guy2.jpg'
+						],
+					len: 12,
+					bgSize: [1920, 1200],
+					bgRota: 1920 / 1200
+				};
+			}
+			setMainImage.prototype = {
+				constructor: setMainImage,
+				inite: function (json) {
+					for (attr in json) {
+						this.setting[attr] = json[attr];
+					}
+				},
+				setData: function () {
+					for (var i = 0; i < this.imgArea.length; i++) {
+						this.setImg(this.imgArea[i], i);
+					}
+				},
+				setImg: function (obj, index) {
+					var _width = $('#mainImagArea').width();
+					for (var i = 0; i < this.setting.len; i++) {
+						var div = $('<div index = '+ i +'></div>;')
+						div.css({
+							'background-image': 'url('+ this.setting.data[index] +')',
+							'width': (1 / 12 * 100) + '%',
+							'background-position-x': -i * _width / 12,
+							'background-size' : _width
+
+						})
+						$(obj).append(div);
+					}
+				},
+				setPos: function () {
+					var _width = $('#mainImagArea').width();
+					var _height = $('#mainImagArea').height();
+					console.log(_width);
+						$('.mainImage div').css({
+							'background-size' : _width
+						})
+					$('.mainImage div').each(function (i, e) {
+						$(e).css({
+							'background-position-x': - $(e).width() * i,
+						})
+					});
+
+				},
+				hideImg: function (obj) {
+					$(obj).find('div').each(function(i, e){
+						dir = i%2 == 0 ? 1 : -1;
+						$(e).css ({
+							top:( dir * (tools.winSize().h * 0.4) * i/12 + dir * (tools.winSize().h * 0.3))
+						})
+					})
+				},
+				showImg: function (obj) {
+					var _this = this;
+					var inter = tools.allAdd(0, 100, 12);
+
+					$('.face').find('div').each(function (i, e) {
+						setTimeout(function (i) {
+							mTween(e, {top: 0, opacity: 100}, 500, 'easeOut', function () {
+								if (i == 11) {
+									_this.hideImg('.face');
+									$('.face div').css ({opacity: 0});
+									$('.bg').css ({
+										'opacity': 1,
+									});
+									$('.bg div').css('background-image', $('.face div').eq(0).css('background-image'));
+									_this.next();
+								}
+								if (i == 1) {
+									$('.bg').animate ({
+										opacity: 0
+									});
+								}
+							});
+						}, i*50, i);
+					});
+				},
+				autoChange: function () {
+					setImage.hideImg($('.face')[0]);
+					setInterval(function () {
+						setImage.showImg($('.face')[0]);
+					}, 3000);
+				},
+				next: function () {
+					this.nowIndex ++;
+					this.nowIndex %= this.setting.data.length;
+					console.log(this.nowIndex)
+					$('.face div').css({
+						'background-image': 'url('+ this.setting.data[this.nowIndex] +')'
+					})
+				}
+			}
+			var setImage = new setMainImage('mainImagArea');
+			setImage.inite();
+			setImage.setData();
+			window.onresize = function () {
+					setImage.setPos();
+			}
+			setImage.autoChange();
+		})()
+	</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body,
+		html {
+			margin: 0;
+			height: 100%;
+			overflow: hidden;
+		}
+		#imgArea {
+			height: 100%;
+			background: url(../img/glasses_guy.jpg) no-repeat 0  -100px / 100vw;
+		}
+		#imgArea div {
+			height: 100%;
+			float: left;
+			position: relative;
+			top: 0; left: 0;
+			/*transition: 2s;*/
+			background: url(../img/glasses_guy.jpg) no-repeat;
+		}
+	</style>
+	<script src = 'jquery-3.1.1.js'></script>
+</head>
+<body>
+	<div id="imgArea"></div>
+	<script>
+		var img = new Image();
+		function winSize () {
+			var size = {};
+			size.width = document.documentElement.clientWidth;
+			size.height = document.documentElement.clientHeight;
+			return size;
+		};
+
+		img.src = '../img/glasses_guy.jpg';
+
+		img.onload = function () {
+			var imgWidth = img.width;
+			this.width = winSize.width + 'px';
+			for (var i = 0; i < 12; i++) {
+				imgArea.innerHTML += '<div style = "width:'+ (1/12)*100 +'%; background-position: '+ -100/12 * i  +'vw -100px ; background-size:'+100+'vw auto"></div>';
+			};
+			var divs = imgArea.getElementsByTagName('div');
+			var dir = 1;
+			document.onclick = function () {
+				for (var i = 0; i < divs.length; i++) {
+					(function (i) {
+						setTimeout(function () {
+							dir = i%2 == 0 ? 1 : -1;
+							$(divs[i]).animate ({
+								top: dir * (winSize().height / 5),
+								opacity: 0
+							}, 400, function () {
+								this.style.backgroundImage = 'url(../img/aa_woman.jpg)';
+								$(this).animate ({
+									top: 0,
+									opacity: 1
+								}, 400)
+							})
+						}, i*100)
+					})(i)
+				}
+			}
+		}
+	</script>
+</body>
+</html>

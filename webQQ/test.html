@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html,
+		body {
+			margin: 0;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		var singleton = function (fn) {
+			console.log(fn)
+			var instance = null;
+			return function () {
+				return instance || (instance = fn.apply(this, arguments));
+			}
+		}
+
+		function createDiv (html) {
+			var div = document.createElement('div');
+			div.style.display = 'none';
+			div.innerHTML = html;
+			document.body.appendChild(div);
+			return div;
+		}
+
+		var createSingleIframes = singleton(createIframe);
+
+		function createIframe () {
+			var iFrame = document.createElement('iframe');
+			iFrame.style.display = 'none';
+			document.body.appendChild(iFrame);
+			return iFrame;
+		}
+
+
+		document.onclick = function () {
+			var d = createSingleIframes();
+			d.src = '../Tencent-WeiYun/index.html';
+			d.style.display = 'block';
+			d.width = '100%';
+			d.height = '100%';
+			d.frameBorder  = 0;
+		}
+
+		document.title.onclick = function () {
+			document.body.removeChild(document.body.children[0])
+		}
+	</script>
+</body>
+</html>
