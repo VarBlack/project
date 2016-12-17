@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>resume</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src = 'js/jquery-3.1.1.js'></script>
+	<script src = 'js/tools.js'></script>
+	<script src="js/miaov-transform.js"></script>
+</head>
+<body>
+	<section id="mainImagArea">
+		<div class="mainImage face"></div>
+		<div class="mainImage bg"></div>
+	</section>
+	<script>
+		(function () {
+			function setMainImage (id) {
+				this.obj = $('#'+id);
+				this.imgArea = this.obj.find('.mainImage');
+				this.nowIndex = 0;
+				this.setting = {
+					data: ['img/aa_woman.jpg', 'img/glasses_guy.jpg'],
+					len: 12
+				};
+			}
+			setMainImage.prototype = {
+				constructor: setMainImage,
+				inite: function (json) {
+					for (attr in json) {
+						this.setting[attr] = json[attr];
+					}
+				},
+				setData: function () {
+					for (var i = 0; i < this.imgArea.length; i++) {
+						this.setImg(this.imgArea[i], i);
+					}
+				},
+				setImg: function (obj, index) {
+					for (var i = 0; i < this.setting.len; i++) {
+						var div = $('<div></div>;')
+						div.css({
+							'width': tools.winSize().w / 12,
+							'background-image': 'url('+ this.setting.data[index] +')',
+							'background-position-x': -i * tools.winSize().w / 12,
+							'background-size' : tools.winSize().w
+						})
+						$(obj).append(div);
+					}
+				},
+				hideImg: function (obj) {
+					$(obj).find('div').each(function(i, e){
+						dir = i%2 == 0 ? 1 : -1;
+						$(e).css ({
+							top:( dir * (tools.winSize().h * 0.4) * i/12 + dir * (tools.winSize().h * 0.3))
+						})
+					})
+				},
+				showImg: function (obj) {
+					var _this = this;
+					var inter = tools.allAdd(0, 100, 12);
+					$('.face').find('div').each(function (i, e) {
+						setTimeout(function (i) {
+							$(e).animate({
+								top: 0,
+								opacity: 1
+							}, 300 + i*10, function () {
+								console.log(i)
+								if (i == 11) {
+									_this.hideImg('.face')
+								}
+							});
+							$('.bg div:nth-child('+(i+1)+')').animate ({
+								opacity: 0
+							}, (13-i)*120);
+						}, i*80, i);
+					});
+				}
+			}
+			var setImage = new setMainImage('mainImagArea');
+			setImage.inite();
+			setImage.setData();
+			setImage.hideImg($('.face')[0]);
+			document.onclick = function () {
+				setImage.showImg($('.face')[0]);
+			}
+		})()
+	</script>
+</body>
+</html>
