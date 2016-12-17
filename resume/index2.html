@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>resume</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src = 'js/jquery-3.1.1.js'></script>
+	<script src = 'js/tools.js'></script>
+	<script src="js/miaov-transform.js"></script>
+</head>
+<body>
+	<section id="mainImagArea">
+		<div class="mainImage bg"></div>
+		<div class="mainImage face"></div>
+	</section>
+	<script>
+		(function () {
+			function setMainImage (id) {
+				this.obj = $(id);
+				this.bg = $('.bg');
+				this.face = $('.face');
+				this.nowIndex = 0;
+				this.setting = {
+					data: [
+						'img/glasses_guy.jpg',
+						'img/aa_woman.jpg',
+						'img/young_girl.jpg',
+						'img/indian_guy2.jpg'
+						],
+					len: 12,
+					bgSize: [1920, 1200],
+					bgRota: 1920 / 1200
+				};
+				this.init();
+			}
+			setMainImage.prototype = {
+				constructor: setMainImage,
+				init: function (json) {
+					for (attr in json) {
+						this.setting[attr] = json[attr];
+					}
+				},
+				setPos: function () {
+					this.setLayOut(this.bg);
+					this.setLayOut(this.face);
+				},
+				rePos: function () {
+					this.setStyle(this.bg);
+					this.setStyle(this.face);
+				},
+				setLayOut: function (imgArea) {
+					var str = '';
+					for (var i = 0; i < 12; i++) {
+						str += '<div></div>'
+					}
+					imgArea.html(str);
+					this.setStyle(imgArea);
+					this.hideImage();
+				},
+				setStyle: function (imgArea) {
+					var _width = imgArea.find('div').width();
+					var _parWidth = imgArea.width();
+					var _parHeight = imgArea.height();
+					if (_parHeight*this.setting.bgRota > _parWidth) {
+						imgArea.css({
+							'min-width':_parHeight*this.setting.bgRota
+						});
+					};
+
+					_width = imgArea.find('div').width();
+
+					_parWidth = imgArea.width();
+
+					imgArea.find('div').css({
+						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
+					}).each(function (i, e) {
+						$(e).css ({
+							'left': i * _width,
+							'background-position': -i * _width,
+							'background-size': _parWidth
+						})
+					})
+				},
+				setData: function () {
+					
+				},
+				autoPlay: function () {
+					
+				},
+				next: function () {
+					this.nowIndex ++;
+					this.nowIndex %= this.setting.data.length;
+					this.face.find('div').css({
+						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
+					});
+					this.showImage();
+				},
+				hideImage: function () {
+					console.log(1)
+					this.face.find('div').each(function(i, e){
+						dir = i%2 == 0 ? 1 : -1;
+						$(e).css ({
+							top:( dir * (tools.winSize().h * 0.4) * i/12 + dir * (tools.winSize().h * 0.3))
+						})
+					})
+				},
+				showImage: function () {
+					var _this = this;
+					this.face.find('div').each(function (i, e) {
+						setTimeout(function (i) {
+							mTween(e, {top: 0, opacity: 100}, 500, 'easeOut', function () {
+								if (i == 11) {
+									_this.hideImage();
+									$('.face div').css ({opacity: 0});
+									$('.bg').css ({
+										'opacity': 1,
+									});
+									$('.bg div').css('background-image', $('.face div').eq(0).css('background-image'));
+								}
+								if (i == 0) {
+									$('.bg').animate ({
+										opacity: 0
+									});
+								}
+							});
+						}, i*50, i);
+					});
+				},
+				prev: function () {
+					
+				},
+				changImage: function () {
+					
+				}
+
+			}
+			var setImage = new setMainImage('#mainImagArea');
+			setImage.setPos();
+			window.onresize = function () {
+				setImage.rePos();
+			}
+			document.onclick = function () {
+				setImage.next();
+			}
+		})()
+	</script>
+</body>
+</html>

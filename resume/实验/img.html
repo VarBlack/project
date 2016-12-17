@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body,
+		html {
+			margin: 0;
+			height: 100%;
+			overflow: hidden;
+		}
+		#imgArea {
+			height: 100%;
+		}
+		#imgArea div {
+			height: 100%;
+			float: left;
+			position: relative;
+			top: 0; left: 0;
+			transition: 2s;
+			background: url(../img/glasses_guy.jpg) no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div id="imgArea"></div>
+	<script>
+		var img = new Image();
+		function winSize () {
+			var size = {};
+			size.width = document.documentElement.clientWidth;
+			size.height = document.documentElement.clientHeight;
+			return size;
+		};
+
+		img.src = '../img/glasses_guy.jpg';
+
+		img.onload = function () {
+			var imgWidth = img.width;
+			this.width = winSize.width + 'px';
+			for (var i = 0; i < 12; i++) {
+				imgArea.innerHTML += '<div style = "width:'+ winSize().width/12 +'px; background-position: '+ -winSize().width/12 * i  +'px -100px ; background-size:'+winSize().width+'px auto"></div>';
+			};
+			var divs = document.getElementsByTagName('div');
+			var dir = 1;
+			document.onclick = function () {
+				for (var i = 0; i < divs.length; i++) {
+					(function (i) {
+						setTimeout(function () {
+							dir = i%2 == 0 ? 1 : -1;
+							divs[i].style.top = dir * (winSize().height / 7) + 'px';
+						}, i*200)
+					})(i)
+				}
+			}
+		}
+	</script>
+</body>
+</html>
