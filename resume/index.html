@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="ds/css/bootstrap.css">
 	<script src = 'js/jquery-3.1.1.js'></script>
 	<script src = 'js/tools.js'></script>
+	<script src="js/tool.js"></script>
 	<script src="js/miaov-transform.js"></script>
 </head>
 <body>
@@ -58,268 +59,73 @@
 			</section>
 		</div>
 	</section>
-	<script>
-		(function () {
-			// 主屏背景图 相关事件
-			function setMainImage (id) {
-				this.obj = $(id);
-				this.bg = $('.bg');
-				this.face = $('.face');
-				this.nowIndex = 0;
-				this.setting = {
-					data: [
-						'img/glasses_guy.jpg',
-						'img/aa_woman.jpg',
-						'img/young_girl.jpg',
-						'img/indian_guy2.jpg'
-						],
-					len: 12,
-					bgSize: [1920, 1200],
-					bgRota: 1920 / 1200,
-					hideFn: function () {
-						return false;
-					},
-					showFn: function () {
-						return false;
-					},
-					isReady: false,
-					title: [
-						'HTML',
-						'css',
-						'JavaScript',
-						'Canvas'
-					],
-					infor: [
-						'At Adison Partners, we know what uncommon talent looks like',
-						'We are the ONLY retained firm that truly bets on our performance',
-						'Dramatically improves business performance outcomes by effectively leveraging people, processes, and technology',
-						'‘Disruptive Talent’ describes the brilliant individuals who think and act differently'
-					]
-				};
-				this.init();
-			}
-			setMainImage.prototype = {
-				constructor: setMainImage,
-				init: function (json) {
-					for (attr in json) {
-						this.setting[attr] = json[attr];
-					}
-				},
-				setPos: function (fn) {
-					// console.log(fn);
-					this.setLayOut(this.bg);
-					this.setLayOut(this.face);
-					fn && fn(this.setting.title[0],this.setting.infor[0])
-				},
-				rePos: function () {
-					this.setStyle(this.bg);
-					this.setStyle(this.face);
-				},
-				setLayOut: function (imgArea) {
-					var str = '';
-					for (var i = 0; i < 12; i++) {
-						str += '<div></div>'
-					}
-					imgArea.html(str);
-					this.setStyle(imgArea);
-					this.hideImage();
-				},
-				setStyle: function (imgArea) {
-					var _width = imgArea.find('div').width();
-					var _parWidth = imgArea.width();
-					var _parHeight = imgArea.height();
-
-					if (_parHeight*this.setting.bgRota > _parWidth) {
-						imgArea.css({
-							'min-width':_parHeight*this.setting.bgRota
-						});
-					};
-
-					// // 测试+
-					// if (_parWidth/this.setting.bgRota > _parHeight) {
-					// console.log(_parWidth/this.setting.bgRota)
-					// 	$('#mainImagArea').css({
-					// 		'min-height': _parWidth/this.setting.bgRota 
-					// 	});
-					// };
-
-					_width = imgArea.find('div').width();
-
-					_parWidth = imgArea.width();
-
-					imgArea.find('div').css({
-						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
-					}).each(function (i, e) {
-						$(e).css ({
-							'left': i * _width,
-							'background-position': -i * _width,
-							'background-size': _parWidth
-						})
-					})
-				},
-				autoPlay: function () {
-					var _this = this;
-					this.timer = setInterval(function () {
-						_this.next();
-					}, 5000)
-				},
-				next: function () {
-					// this.setting.isReady = false;
-					this.nowIndex ++;
-					this.nowIndex %= this.setting.data.length;
-					this.face.find('div').css({
-						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
-					});
-					this.showImage();
-				},
-				prev: function () {
-					this.nowIndex --;
-					if (this.nowIndex < 0) {
-						this.nowIndex = this.setting.data.length-1;
-					}
-					// console.log(this.nowIndex)
-					this.face.find('div').css({
-						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
-					});
-					this.showImage();
-				},
-				hideImage: function () {
-					this.face.find('div').each(function(i, e){
-						dir = i%2 == 0 ? 1 : -1;
-						$(e).css ({
-							top:( dir * (tools.winSize().h * 0.4) * i/12 + dir * (tools.winSize().h * 0.2))
-						})
-					});
-					this.setting.showFn && this.setting.showFn();
-				},
-				isReady: function () {
-					return this.setting.isReady;
-				},
-				showImage: function () {
-					this.setting.isReady = true;
-					var _this = this;
-					this.face.find('div').each(function (i, e) {
-						setTimeout(function (i) {
-							mTween(e, {top: 0, opacity: 100}, 500, 'easeOut', function () {
-								if (i == 11) {
-									_this.hideImage();
-									$('.face div').css ({opacity: 0});
-									$('.bg').css ({
-										'opacity': 1,
-									});
-									$('.bg div').css('background-image', $('.face div').eq(0).css('background-image'));
-
-									_this.setting.isReady = false;
-								}
-								if (i == 0) {
-									$('.bg').animate ({
-										opacity: 0
-									});
-								}
-							});
-						}, i*70, i);
-					});
-					// console.log(_this.setting.title[_this.nowIndex]);
-					_this.setting.hideFn && _this.setting.hideFn(_this.setting.title[_this.nowIndex],_this.setting.infor[_this.nowIndex]);
-				},
-				clearTimer: function () {
-					clearInterval(this.timer);
-				}
-
-			};
-
-			// 主屏文字信息相关
-			function IntroBox (selector) {
-				this.obj = $(selector);
-				this.spanBox = this.obj.find('span');
-			}
-
-			IntroBox.prototype = {
-				constructor: IntroBox,
-				inite: function () {
-				},
-				showBox: function () {
-					this.obj.fadeIn(300);
-					this.spanBox.each(function (i, e) {
-						$(e).attr({
-							style: ''
-						})
-					})
-				},
-				hideBox: function () {
-					this.obj.fadeOut(800);
-					this.spanBox.each(function (i, e) {
-						$(e).width(0);
-						$(e).height(0);
-					})
-				}
-			}
-
-			// 阻止移动端默认事件
-			document.addEventListener('touchstart', function (ev) {
-				ev.preventDefault();
-			})
-
-			var setImage = new setMainImage('#mainImagArea');
-			var mainIntroBox = new IntroBox('.spanBox');
-
-			// 初始化：添加 进入 移出 的回调函数，将内容区 和 背景关联起来
-			setImage.init ({
-				showFn: function (title) {
-					mainIntroBox.showBox();
-					$('#title').fadeIn(800);
-					$('#intro').fadeIn(800);
-				},
-				hideFn: function (title, infor) {
-					mainIntroBox.hideBox();
-					$('#title').fadeOut(800, function () {
-						$('#title').html(title);
-					});
-					$('#intro').fadeOut(800, function () {
-						$('#intro p').html(infor)
-					});
-				}
-			});
-
-			// 初始化结构，顺便将将内容区 和 背景 一起创建结构，这里可以将setPos和init合并起来，将这里作为配置参数；
-			setImage.setPos(function (title, infor) {
-				$('#title').html(title);
-				$('#intro p').html(infor)
-			});
-
-			// 调用自动播放
-			setImage.autoPlay();
-
-			// 当窗口大小调整的时候，调整背景相关设置
-			window.onresize = function () {
-				setImage.rePos();
-			}
-
-			// 右边按钮，进入下一张
-			$('.rightBtn').click(function () {
-				if(setImage.isReady()){
-					return false;
-				};
-				setImage.clearTimer();
-				setImage.next();
-				setImage.autoPlay();
-			});
-
-			// 左边按钮，进入下一张
-			$('.leftBtn').click(function () {
-				if(setImage.isReady()){
-					return false;
-				};
-				setImage.clearTimer();
-				setImage.prev();
-				setImage.autoPlay();
-			});
-
-			centerBox.onclick = function (ev) {
-				ev.cancelBubble = true;
-			};
-
-		})()
-	</script>
+	<section id="menuBox">
+		<div class="spanBox">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<nav>
+			<a href="#page=main" class="active">Home</a>
+			<a href="#page=executive">Executive Search</a>
+			<a href="javascript:;">Adison Consulting</a>
+			<a href="javascript:;">Success Stories</a>
+			<a href="javascript:;">About Us</a>
+			<a href="javascript:;">Contact Us</a>
+		</nav>
+	</section>
+	<section id="execBox">
+		<header>
+			<div class="spanBox">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<h1 class="title">
+				Uncommon Talent
+			</h1>
+		</header>
+		<section class="artical">
+			<div>
+				<h2>
+					At Adison Partners, we know what uncommon talent looks like.
+				</h2>
+				<p>
+					As technological, social and cultural trends impact the global enterprise, organizations are seeking a new kind of talent that is a better fit for the future. “Uncommon talent” is a term used to describe high-value individuals with unique, innovative skills that transcend industries.
+				<p>
+					Uncommon talent includes innovative and original thinkers with an intellectual curiosity that constantly challenges the status quo.
+				</p>
+			</div>
+			<div>
+				<p>
+				These driven individuals demonstrate the propensity to continuously learn new things and apply these learnings to deftly adapt to business critical opportunities.
+				</p>
+				<p>
+					While other industry recruiters are focused on re-using the same, limited pool of candidates, we focus on the identification and conversion of fresh, top talent.
+				</p>
+				<p>
+					Our candidates embody a broad mix of characteristics including creativity and operational know-how, paired with deep, industry-agnostic business experience.
+				</p>
+			</div>
+			<div>
+				<p>
+					Our approach provides a new lens for identifying, converting, and placing talent to spark innovation, inspiration, and creativity in organizations on the brink of change.
+				</p>
+				<p>
+					Our mission is to identify, source and cultivate the uncommon talent that empowers your organization to expand its reach, broaden capabilities and reinvent business for a new era.
+				</p>
+			</div>
+			</p>
+		</section>
+	</section>
+	<script src = 'js/index.js'></script>
 </body>
 </html>
