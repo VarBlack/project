@@ -123,6 +123,12 @@
 			clearInterval(this.timer);
 			this.timer = null;
 		},
+		now: function (callback) {
+			this.face.find('div').css({
+				'background-image': 'url('+ this.currentBg[this.nowIndex] +')',
+			});
+			this.showImage(callback);
+		},
 		next: function (callback) {
 			// this.setting.isReady = false;
 			this.nowIndex ++;
@@ -168,7 +174,7 @@
 								'opacity': 1,
 							});
 							$('.bg div').css({
-								// 
+								//
 
 								'background-image': $('.face div').eq(0).css('background-image')
 							});
@@ -253,10 +259,6 @@
 	// 调用自动播放
 	setImage.autoPlay();
 
-	// 当窗口大小调整的时候，调整背景相关设置
-	window.onresize = function () {
-		setImage.rePos();
-	}
 
 	// 右边按钮，进入下一张
 	$('.rightBtn').click(function () {
@@ -284,12 +286,51 @@
 
 
 
-
-
 	// menu 点击事件
 
 	var menuBox = new IntroBox('#menuBox .spanBox');
 	var execBox = new IntroBox('#execBox .spanBox');
+
+
+	var menuPage =  new setMainImage('#mainImagArea');
+	menuPage.init({
+		data: [
+			'img/bg.jpg'
+		],
+		showFn: function () {
+			// $('#centerBox').fadeOut(800, function () {
+				$('#menuBox').fadeIn(400, function () {
+					menuBox.showBox();
+				});
+			// });
+		},
+		hideFn: function (title, infor) {
+			menuBox.hideBox();
+			$('#centerBox').fadeOut(400)
+		}
+	});
+
+
+
+	var execPage =  new setMainImage('#mainImagArea');
+	execPage.init({
+		data: [
+			'img/bg.jpg',
+			'img/bgWhite.jpg'
+		],
+		showFn: function () {
+			$('#execBox').fadeIn(function () {
+				execBox.showBox();
+			})
+		},
+		hideFn: function (title, infor) {
+			execBox.hideBox();
+			$('#menuBox').fadeOut(600);
+		}
+	});
+
+
+
 
 	var targetHash = 'menu';
 	var nowHash = 'main';
@@ -320,25 +361,14 @@
 	function backMenu () {
 		switch (nowHash) {
 			case 'main':
-				menuBox.hideBox();
-				$('#centerBox').fadeOut(800, function () {
-					$('#menuBox').fadeIn(400, function () {
-						menuBox.showBox();
-					});
-
-				});
 				setImage.stopAutoPlay();
-				setImage.tabBg(true);
-				setImage.next();
+				menuPage.now();
 				targetHash = 'main';
 				break;
 			case 'executive':
+				menuPage.now();
 				execBox.hideBox();
-				$('#execBox').fadeOut(800, function () {
-					$('#menuBox').fadeIn(400, function () {
-						menuBox.showBox();
-					});
-				});
+				$('#execBox').fadeOut(800);
 				targetHash = 'executive';
 				break;
 			default:
@@ -355,37 +385,30 @@
 		var hash = ff.getHash();
 		switch (hash) {
 			case 'menu':
-				menuBox.hideBox();
 				$('#mainImagArea').addClass('bgBlue');
 				$('.menu').addClass('sonStyle');
 				backMenu();
+				nowHash = 'menu';
 				window.location.hash = '';
 				break;
 			case 'main':
 				$('#mainImagArea').removeClass('bgBlue');
 				$('.menu').removeClass('sonStyle');
+				menuBox.hideBox();
 				nowHash = 'main';
 				$('#menuBox').fadeOut(600,function () {
-					setImage.autoPlay();
-					setImage.tabBg(false);
-					setImage.next(function () {
+					setImage.now(function () {
 						$('#centerBox').fadeIn()
 					});
+					setImage.autoPlay();
 				});
 				targetHash = 'menu';
 				window.location.hash = '';
 				break;
 			case 'executive' :
-				execBox.hideBox();
-				nowHash = 'executive';
 				$('.menu').addClass('sonStyle');
-				setImage.tabBg(true);
-				$('#menuBox').fadeOut(600);
-				setImage.next(function () {
-					$('#execBox').fadeIn(function () {
-						execBox.showBox();
-					})
-				});
+				nowHash = 'executive';
+				execPage.now();
 				window.location.hash = '';
 				targetHash = 'menu';
 				break;
@@ -393,13 +416,23 @@
 				break;
 		}
 	}
-	var abcImg =  new setMainImage('#mainImagArea');
-	abcImg.init({
-		data: [
-			'img/bgWhite.jpg'
-		]
-	});
-	alert(1);
-	setImage.stopAutoPlay();
-	abcImg.next();
+
+	// 当窗口大小调整的时候，调整背景相关设置
+	window.onresize = function () {
+		switch (nowHash) {
+			case 'menu': 
+				menuPage.rePos();
+				break;
+			case 'main':
+				setImage.rePos();
+				break;
+			case 'executive':
+				execPage.rePos();
+				break;
+			default:
+				// statements_def
+				break;
+		}
+	}
+
 })()
