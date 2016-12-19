@@ -104,7 +104,7 @@
 					}
 				},
 				setPos: function (fn) {
-					console.log(fn);
+					// console.log(fn);
 					this.setLayOut(this.bg);
 					this.setLayOut(this.face);
 					fn && fn(this.setting.title[0],this.setting.infor[0])
@@ -166,7 +166,7 @@
 					if (this.nowIndex < 0) {
 						this.nowIndex = this.setting.data.length-1;
 					}
-					console.log(this.nowIndex)
+					// console.log(this.nowIndex)
 					this.face.find('div').css({
 						'background-image': 'url('+ this.setting.data[this.nowIndex] +')',
 					});
@@ -208,7 +208,7 @@
 							});
 						}, i*70, i);
 					});
-					console.log(_this.setting.title[_this.nowIndex]);
+					// console.log(_this.setting.title[_this.nowIndex]);
 					_this.setting.hideFn && _this.setting.hideFn(_this.setting.title[_this.nowIndex],_this.setting.infor[_this.nowIndex]);
 				},
 				clearTimer: function () {
@@ -245,12 +245,7 @@
 
 			var setImage = new setMainImage('#mainImagArea');
 			var mainIntroBox = new IntroBox('.spanBox');
-			/*var title = [
-						'HTML',
-						'css',
-						'JavaScript',
-						'Canvas'
-					];*/
+
 			setImage.init ({
 				showFn: function (title) {
 					mainIntroBox.showBox();
@@ -266,7 +261,8 @@
 						$('#intro p').html(infor)
 					});
 				}
-			})
+			});
+
 			setImage.setPos(function (title, infor) {
 				$('#title').html(title);
 				$('#intro p').html(infor)
@@ -275,10 +271,6 @@
 			window.onresize = function () {
 				setImage.rePos();
 			}
-			/*document.onclick = function () {
-				setImage.next();
-				// mainIntroBox.hideBox();
-			}*/
 
 			$('.rightBtn').click(function () {
 				if(setImage.isReady()){
@@ -298,7 +290,6 @@
 			});
 			centerBox.onclick = function (ev) {
 				ev.cancelBubble = true;
-				// mainIntroBox.showBox();
 			}
 
 

@@ -353,6 +353,10 @@ html {
   #header .log {
     top: 15px;
     left: 15px; }
+  #header .menu {
+    position: absolute;
+    top: 15px;
+    right: 15px; }
 
   #centerBox #infor {
     height: 75px; }
