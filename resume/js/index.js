@@ -225,9 +225,9 @@
 	}
 
 	// 阻止移动端默认事件
-	document.addEventListener('touchstart', function (ev) {
+	/*document.addEventListener('touchstart', function (ev) {
 		ev.preventDefault();
-	})
+	})*/
 
 	var setImage = new setMainImage('#mainImagArea');
 	var mainIntroBox = new IntroBox('#centerBox .spanBox');
@@ -320,10 +320,12 @@
 		],
 		showFn: function () {
 			$('#execBox').fadeIn(function () {
+				$('#sideBar').fadeIn();
 				execBox.showBox();
 			})
 		},
 		hideFn: function (title, infor) {
+			$('#sideBar').fadeOut();
 			execBox.hideBox();
 			$('#menuBox').fadeOut(600);
 		}
@@ -369,6 +371,7 @@
 				menuPage.now();
 				execBox.hideBox();
 				$('#execBox').fadeOut(800);
+				$('#sideBar').fadeOut();
 				targetHash = 'executive';
 				break;
 			default:
@@ -434,5 +437,7 @@
 				break;
 		}
 	}
+
+
 
 })()
