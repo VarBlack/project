@@ -1,27 +1,42 @@
-1:  linear-gradient(140deg, #4d1aa6 0%,#4d1aa6 40%,#461897 50%,#461897 100%)
-2:  linear-gradient(140deg, #4d1aa6 0%,#4d1aa6 70%,#461897 80%,#461897 100%)
-3:  #4d1aa6
-4:  linear-gradient(100deg, #4d1aa6 0%,#4d1aa6 50%,#461897 70%,#461897 100%)
-5:  linear-gradient(320deg, #4d1aa6 0%,#4d1aa6 70%,#461897 80%,#461897 100%)
-6:  #4d1aa6
-7:  #4d1aa6
-8:  linear-gradient(140deg, #4d1aa6 0%,#4d1aa6 70%,#461897 80%,#461897 100%)
-9:  linear-gradient(30deg, #4d1aa6 0%,#4d1aa6 40%,#461897 50%,#461897 100%)
-10: linear-gradient(30deg, #4d1aa6 0%,#4d1aa6 60%,#461897 70%,#461897 100%)
-11: #4d1aa6
-12: linear-gradient(40deg, #4d1aa6 0%,#4d1aa6 60%,#461897 70%,#461897 100%)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src = 'jquery-3.1.1.js'></script>
+	<style>
+	</style>
+</head>
+<body>
+<input type="text" name="" id="">
+	<ul id="#list">
+	</ul>
+<script type="text/javascript">
+	var $text = $("input");
+	var $list = $("#list");
 
+	$text.on("input",function() {
+		var val = encodeURIComponent($text.val());
+		console.log($text.val());
+		$.ajax({
+			url: "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",
+			data: {
+				wd: val
+			},
+			jsonp: "cb",
+			dataType: "jsonp",
+			success:function(json) {
+				$list.text("");
+				$(json.s).each(function(i,e) {
+					var $li = $("<li></li>");
 
+					$li.html('<a href="https://www.baidu.com/s?ie=utf-8&f=3&rsv_bp=0&rsv_idx=1&tn=baidu&wd='+e+'" target="_self">'+e+'</a>');
 
-1:  linear-gradient(140deg, #f7f7f7 0%,#f7f7f7 40%,#f7f7f7 50%,#f7f7f7 100%)
-2:  linear-gradient(140deg, #f7f7f7 0%,#f7f7f7 70%,#e2e1e1 80%,#e2e1e1 100%)
-3:  #f7f7f7
-4:  linear-gradient(100deg, #f7f7f7 0%,#f7f7f7 50%,#e2e1e1 70%,#e2e1e1 100%)
-5:  linear-gradient(320deg, #f7f7f7 0%,#f7f7f7 70%,#e2e1e1 80%,#e2e1e1 100%)
-6:  #f7f7f7
-7: 	#f7f7f7
-8:  linear-gradient(140deg, #f7f7f7 0%,#f7f7f7 70%,#e2e1e1 80%,#e2e1e1 100%)
-9:  linear-gradient(30deg, #f7f7f7 0%,#f7f7f7 40%,#e2e1e1 50%,#e2e1e1 100%)
-10: linear-gradient(30deg, #f7f7f7 0%,#f7f7f7 60%,#e2e1e1 70%,#e2e1e1 100%)
-11: #f7f7f7
-12:	linear-gradient(40deg, #f7f7f7 0%,#f7f7f7 60%,#e2e1e1 70%,#e2e1e1 100%)
+					$list.append($li);
+				})
+			}
+		});
+	});
+</script>
+</body>
+</html>

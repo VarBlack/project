@@ -124,14 +124,20 @@
 			this.timer = null;
 		},
 		now: function (callback) {
+
 			this.face.find('div').css({
 				'background-image': 'url('+ this.currentBg[this.nowIndex] +')',
 			});
 			this.showImage(callback);
 		},
-		next: function (callback) {
-			// this.setting.isReady = false;
+		next: function (index, callback) {
 			this.nowIndex ++;
+			if (typeof index == 'function') {
+				callback = index;
+			} else if (typeof index == 'number') {
+				this.nowIndex = index;
+			}
+			// this.setting.isReady = false;
 			this.nowIndex %= this.currentBg.length;
 			this.face.find('div').css({
 				'background-image': 'url('+ this.currentBg[this.nowIndex] +')',
@@ -290,9 +296,9 @@
 
 	var menuBox = new IntroBox('#menuBox .spanBox');
 	var execBox = new IntroBox('#execBox .spanBox');
-
-
+	var contactBox = new IntroBox('#contactPage .spanBox');
 	var menuPage =  new setMainImage('#mainImagArea');
+
 	menuPage.init({
 		data: [
 			'img/bg.jpg'
@@ -311,7 +317,6 @@
 	});
 
 
-
 	var execPage =  new setMainImage('#mainImagArea');
 	execPage.init({
 		data: [
@@ -325,7 +330,8 @@
 			})
 		},
 		hideFn: function (title, infor) {
-			$('#sideBar').fadeOut();
+			$('#execBox').fadeOut(800);
+			// $('#sideBar').fadeOut();
 			execBox.hideBox();
 			$('#menuBox').fadeOut(600);
 		}
@@ -344,6 +350,27 @@
 		$('.menu').toggleClass('active');
 		window.location.hash = targetHash;
 	})
+
+
+	// contact page
+
+	var contactPage = new setMainImage('#contactPage');
+
+	contactPage.init({
+		data: [
+			'img/bgWhite.jpg'
+		],
+		showFn: function () {
+			$('#contactPage').fadeIn(function () {
+				contactBox.showBox();
+			})
+		},
+		hideFn: function (title, infor) {
+			$('#contactPage').fadeOut(800);
+			contactBox.hideBox();
+			$('#menuBox').fadeOut(600);
+		}
+	});
 
 
 	// menu 下导航相关
@@ -374,11 +401,22 @@
 				$('#sideBar').fadeOut();
 				targetHash = 'executive';
 				break;
+			case 'contact': {
+				menuPage.now();
+				contactBox.hideBox();
+				$('#contactPage').fadeOut(800);
+				$('#sideImg').fadeOut();
+				targetHash = 'contact';
+				break;
+			}
 			default:
 				// statements_def
 				break;
 		}
 	}
+
+
+	var data;
 
 
 
@@ -409,12 +447,50 @@
 				window.location.hash = '';
 				break;
 			case 'executive' :
+				data = new dealData(pageData);
+
+				$('#execBox .title').html(data.getTitle()[0]);
+
+				$('#sideBar').html(data.setTitle())
+				$('#execBox .artical').html(data.setLayOut(0));
 				$('.menu').addClass('sonStyle');
 				nowHash = 'executive';
 				execPage.now();
 				window.location.hash = '';
 				targetHash = 'menu';
 				break;
+			case 'ad' :
+				data = new dealData(pageData1);
+
+				$('#execBox .title').html(data.getTitle()[0]);
+
+				$('#sideBar').html(data.setTitle())
+				$('#execBox .artical').html(data.setLayOut(0));
+				$('.menu').addClass('sonStyle');
+				nowHash = 'executive';
+				execPage.now();
+				window.location.hash = '';
+				targetHash = 'menu';
+				break;
+			case 'suc' :
+				data = new dealData(pageData2);
+				$('#execBox .title').html(data.getTitle()[0]);
+
+				$('#sideBar').html(data.setTitle())
+				$('#execBox .artical').html(data.setLayOut(0));
+				$('.menu').addClass('sonStyle');
+				nowHash = 'executive';
+				execPage.now();
+				window.location.hash = '';
+				targetHash = 'menu';
+				break;	
+			case 'contact' :
+				$('.menu').removeClass('sonStyle');
+				nowHash = 'contact';
+				contactPage.now();
+				$('#sideImg').fadeIn();
+				window.location.hash = '';
+				targetHash = 'menu';
 			default:
 				break;
 		}
@@ -423,7 +499,7 @@
 	// 当窗口大小调整的时候，调整背景相关设置
 	window.onresize = function () {
 		switch (nowHash) {
-			case 'menu': 
+			case 'menu':
 				menuPage.rePos();
 				break;
 			case 'main':
@@ -432,6 +508,9 @@
 			case 'executive':
 				execPage.rePos();
 				break;
+			case 'contact':
+				contactPage.rePos();
+				break;
 			default:
 				// statements_def
 				break;
@@ -439,5 +518,43 @@
 	}
 
 
+
+	// sideBar 的功能实现
+
+	$('#sideBar').on('click', 'a', function (ev) {
+		var _this = this;
+		var index = $(_this).index();
+		if ($(this).hasClass('active')) {
+			return false;
+		}
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+		execPage.next(index ,function () {
+			tabStyle(index);
+			$('#execBox .title').html($(_this).html());
+
+			$('#execBox .artical').html(data.setLayOut(index));
+		});
+	})
+
+	function tabStyle (index) {
+		index%=2;
+		console.log(index)
+		if(index) {
+			$('.menu').removeClass('sonStyle');
+			$('#execBox').removeClass('conStyle1').addClass('conStyle2');
+			// $('#execBox').removeClass('conStyle1').addClass('conStyle2');
+
+			$('#sideBar').removeClass('whiteStyle').addClass('blueStyle');;
+			console.log(1);
+		} else {
+			$('.menu').addClass('sonStyle');
+			$('#execBox').removeClass('conStyle2').addClass('conStyle1');
+			$('#sideBar').removeClass('blueStyle').addClass('whiteStyle');
+			console.log(2);
+
+			// $('#sideBar').addClass('blueStyle');
+		}
+	}
 
 })()
