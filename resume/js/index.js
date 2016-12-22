@@ -294,21 +294,32 @@
 
 	// menu 点击事件
 
+	// 目前的状态， 用于点击menu时跳转指向的目标
+	var targetHash = 'menu';
+	// 当前页的标示
+	var nowHash = 'main';
+	// 用于存放，要渲染页的文字内容
+	var data;
+
+	var menuPage =  new setMainImage('#mainImagArea');
+	var execPage =  new setMainImage('#mainImagArea');
+	var contactPage = new setMainImage('#contactPage');
 	var menuBox = new IntroBox('#menuBox .spanBox');
 	var execBox = new IntroBox('#execBox .spanBox');
 	var contactBox = new IntroBox('#contactPage .spanBox');
-	var menuPage =  new setMainImage('#mainImagArea');
+
+	var canTab = false;
+
+	// 导航页
 
 	menuPage.init({
 		data: [
 			'img/bg.jpg'
 		],
 		showFn: function () {
-			// $('#centerBox').fadeOut(800, function () {
-				$('#menuBox').fadeIn(400, function () {
-					menuBox.showBox();
-				});
-			// });
+			$('#menuBox').fadeIn(400, function () {
+				menuBox.showBox();
+			});
 		},
 		hideFn: function (title, infor) {
 			menuBox.hideBox();
@@ -317,7 +328,7 @@
 	});
 
 
-	var execPage =  new setMainImage('#mainImagArea');
+	// page1
 	execPage.init({
 		data: [
 			'img/bg.jpg',
@@ -325,36 +336,40 @@
 		],
 		showFn: function () {
 			$('#execBox').fadeIn(function () {
-				$('#sideBar').fadeIn();
+				$('#sideBar').fadeIn(function () {
+					canTab = true;
+				});
 				execBox.showBox();
+				scroll.init('#bar span', {
+					up: function () {
+						if (canTab == false) {return false}
+						canTab = false;
+						var downEl  = $('#sideBar a').filter('.active').prev()
+						if (!(downEl.length)) {
+							downEl = $('#sideBar a:last')
+						}
+						downEl.trigger('click.bar')
+					},
+					down: function () {
+						if (canTab == false) {return false}
+						canTab = false;
+						var downEl  = $('#sideBar a').filter('.active').next()
+						if (!(downEl.length)) {
+							downEl = $('#sideBar a').eq(0)
+						}
+						downEl.trigger('click.bar')
+					}
+				});
 			})
 		},
 		hideFn: function (title, infor) {
 			$('#execBox').fadeOut(800);
-			// $('#sideBar').fadeOut();
 			execBox.hideBox();
 			$('#menuBox').fadeOut(600);
 		}
 	});
 
-
-
-
-	var targetHash = 'menu';
-	var nowHash = 'main';
-
-	$('#header').on('click.menu', '.menu', function () {
-		if(setImage.isReady()){
-			return false;
-		};
-		$('.menu').toggleClass('active');
-		window.location.hash = targetHash;
-	})
-
-
 	// contact page
-
-	var contactPage = new setMainImage('#contactPage');
 
 	contactPage.init({
 		data: [
@@ -371,6 +386,19 @@
 			$('#menuBox').fadeOut(600);
 		}
 	});
+
+
+
+	// 头部的点击事件
+	$('#header').on('click.menu', '.menu', function () {
+		if(setImage.isReady()){
+			return false;
+		};
+		$('.menu').toggleClass('active');
+		window.location.hash = targetHash;
+	})
+
+
 
 
 	// menu 下导航相关
@@ -395,11 +423,13 @@
 				targetHash = 'main';
 				break;
 			case 'executive':
-				menuPage.now();
-				execBox.hideBox();
-				$('#execBox').fadeOut(800);
-				$('#sideBar').fadeOut();
-				targetHash = 'executive';
+				mainAreaChange.out('executive');
+				break;
+			case 'suc':
+				mainAreaChange.out('suc');
+				break;
+			case 'ad':
+				mainAreaChange.out('ad');
 				break;
 			case 'contact': {
 				menuPage.now();
@@ -416,7 +446,6 @@
 	}
 
 
-	var data;
 
 
 
@@ -447,43 +476,14 @@
 				window.location.hash = '';
 				break;
 			case 'executive' :
-				data = new dealData(pageData);
-
-				$('#execBox .title').html(data.getTitle()[0]);
-
-				$('#sideBar').html(data.setTitle())
-				$('#execBox .artical').html(data.setLayOut(0));
-				$('.menu').addClass('sonStyle');
-				nowHash = 'executive';
-				execPage.now();
-				window.location.hash = '';
-				targetHash = 'menu';
+				mainAreaChange.in(pageData, 'executive')
 				break;
 			case 'ad' :
-				data = new dealData(pageData1);
-
-				$('#execBox .title').html(data.getTitle()[0]);
-
-				$('#sideBar').html(data.setTitle())
-				$('#execBox .artical').html(data.setLayOut(0));
-				$('.menu').addClass('sonStyle');
-				nowHash = 'executive';
-				execPage.now();
-				window.location.hash = '';
-				targetHash = 'menu';
+				mainAreaChange.in(pageData1, 'ad')
 				break;
 			case 'suc' :
-				data = new dealData(pageData2);
-				$('#execBox .title').html(data.getTitle()[0]);
-
-				$('#sideBar').html(data.setTitle())
-				$('#execBox .artical').html(data.setLayOut(0));
-				$('.menu').addClass('sonStyle');
-				nowHash = 'executive';
-				execPage.now();
-				window.location.hash = '';
-				targetHash = 'menu';
-				break;	
+				mainAreaChange.in(pageData2, 'suc')
+				break;
 			case 'contact' :
 				$('.menu').removeClass('sonStyle');
 				nowHash = 'contact';
@@ -496,8 +496,31 @@
 		}
 	}
 
+	var mainAreaChange = {
+		in: function (mainData, newHash) {
+			console.log(newHash)
+			data = new dealData(mainData);
+			$('#execBox .title').html(data.getTitle()[0]);
+			$('#sideBar').html(data.setTitle())
+			$('#execBox .artical').html(data.setLayOut(0));
+			$('.menu').addClass('sonStyle');
+			nowHash = newHash;
+			execPage.now();
+			window.location.hash = '';
+			targetHash = 'menu';
+		},
+		out: function (nextHash) {
+			menuPage.now();
+			execBox.hideBox();
+			$('#execBox').fadeOut(800);
+			$('#sideBar').fadeOut();
+			targetHash = nextHash;
+		}
+	}
+
 	// 当窗口大小调整的时候，调整背景相关设置
-	window.onresize = function () {
+
+	$(window).on('resize', function () {
 		switch (nowHash) {
 			case 'menu':
 				menuPage.rePos();
@@ -506,7 +529,10 @@
 				setImage.rePos();
 				break;
 			case 'executive':
+			case 'suc':
+			case 'ad':
 				execPage.rePos();
+				// scroll.getInfor('#bar span');
 				break;
 			case 'contact':
 				contactPage.rePos();
@@ -515,13 +541,15 @@
 				// statements_def
 				break;
 		}
-	}
+	})
 
 
+	var scroll = new scrollTool('#forBar');
 
 	// sideBar 的功能实现
 
-	$('#sideBar').on('click', 'a', function (ev) {
+	$('#sideBar').on('click.bar', 'a', function (ev) {
+		console.log(ev)
 		var _this = this;
 		var index = $(_this).index();
 		if ($(this).hasClass('active')) {
@@ -530,31 +558,33 @@
 		$(this).siblings().removeClass('active');
 		$(this).addClass('active');
 		execPage.next(index ,function () {
+
 			tabStyle(index);
 			$('#execBox .title').html($(_this).html());
-
 			$('#execBox .artical').html(data.setLayOut(index));
+			$('#forBar').css({
+				transform: 'translateY(0px)'
+			})
+			$('#bar span').css({
+				transform: 'translateY(0px)'
+			})
+
 		});
 	})
 
 	function tabStyle (index) {
 		index%=2;
-		console.log(index)
 		if(index) {
 			$('.menu').removeClass('sonStyle');
 			$('#execBox').removeClass('conStyle1').addClass('conStyle2');
-			// $('#execBox').removeClass('conStyle1').addClass('conStyle2');
-
 			$('#sideBar').removeClass('whiteStyle').addClass('blueStyle');;
-			console.log(1);
 		} else {
 			$('.menu').addClass('sonStyle');
 			$('#execBox').removeClass('conStyle2').addClass('conStyle1');
 			$('#sideBar').removeClass('blueStyle').addClass('whiteStyle');
-			console.log(2);
-
-			// $('#sideBar').addClass('blueStyle');
 		}
 	}
+
+
 
 })()

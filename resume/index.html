@@ -13,6 +13,30 @@
 	<script src="js/tool.js"></script>
 	<script src="js/miaov-transform.js"></script>
 	<script src="js/dealData.js"></script>
+	<script src='js/scrollTool.js'></script>
+	<style>
+		#bar {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 100%;
+			width: 0.5%;
+			transition: .5s;
+			max-width: 6px;
+			min-width: 3px;
+			border-radius: 6px;
+			opacity: 0;
+			background: #58a;
+		}
+
+		#bar span {
+			position: absolute;
+			top: 0; left: 0;
+			width: 100%;
+			border-radius: 6px;
+			background: #fb3;
+		}
+	</style>
 </head>
 <body>
 	<header id="header">
@@ -82,6 +106,7 @@
 		</nav>
 	</section>
 	<section id="execBox" class="conInfor conStyle1">
+	<section id="forBar">
 		<header>
 			<div class="spanBox">
 				<span></span>
@@ -132,6 +157,7 @@
 					Our mission is to identify, source and cultivate the uncommon talent that empowers your organization to expand its reach, broaden capabilities and reinvent business for a new era.
 				</p>
 			</div> -->
+		</section>
 		</section>
 	</section>
 	<section id="contactPage" class="conInfor conStyle2">
@@ -185,6 +211,9 @@
 	</nav>
 	<div id="sideImg">
 		<img src="img/contact.jpg" alt="">
+	</div>
+	<div id="bar">
+		<span></span>
 	</div>
 	<script src = 'js/index.js'></script>
 </body>
