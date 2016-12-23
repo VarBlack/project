@@ -33,7 +33,15 @@
 			})
 		},
 
-
+		clearInite: function () {
+			this.obj.css({
+				transform: 'translateY(0px)'
+			});
+			this.bar.css({
+				transform: 'translateY(0px)'
+			});
+			this.target = 0;
+		},
 		getInfor: function(bar){
 			this.infor = {
 				t: this.obj.offset().top,
@@ -69,36 +77,37 @@
 			var _this = this;
 			// if (this.obj.style.display) {}
 			ff.addHandler(_this.obj[0], 'mousewheel', function (ev) {
-				/*if (_this.barParH - _this.bar.height() <= 0) {
-					return false;
-				}*/
-				// if (_this.obj.css('display') == 'block' && _this.obj.css(opacity) == '1') {
+				// if (_this.barParH - _this.bar.height() <= 0) {
 				// 	return false;
 				// }
+				if (_this.obj.css('display') != 'block' && _this.obj.css(opacity) != '1') {
+					return false;
+				}
 				console.log(1)
 				clearInterval(_this.timer)
 				_this.bar.parent().css({
 					opacity: 1
 				});
-				_timer = setTimeout(function () {
-					_this.bar.parent().css({
-						opacity: 0
-					});
-				}, 3000)
+				// _timer = setTimeout(function () {
+				// 	_this.bar.parent().css({
+				// 		opacity: 0
+				// 	});
+				// }, 3000)
 				ev = ev || window.event;
 				var now = parseInt($('#box1').css('top'));
 				if (ff.getScrollDetail(ev)) {
 					_this.target += 10;
 					if (_this.target >= 0) {
 						_this.target = 0;
+						_this.setting.up();
+						// _this.clearInite();
 					}
-					_this.setting.up();
 				} else {
 					_this.target -= 10;
 					if (_this.target < -(_this.infor.h - _this.infor.parH)) {
 						_this.target = -(_this.infor.h - _this.infor.parH);
 						_this.setting.down();
-
+						// _this.clearInite();
 					}
 					_this.target = Math.min(_this.target, 0)
 				}
@@ -110,8 +119,6 @@
 				})
 			})
 		}
-
-
 	}
 
 

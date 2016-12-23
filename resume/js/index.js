@@ -1,4 +1,26 @@
 (function () {
+
+
+
+
+
+
+	// 隐藏地址栏  & 处理事件的时候 ，防止滚动条出现
+	window.addEventListener('load', function(){ 
+	        setTimeout(function(){ window.scrollTo(0,1); }, 100); 
+	});
+
+
+	$('a').on('touchend', function (ev) {
+		if (ev.touchs.target.tagName.toLowerCase() == 'a') {
+			window.location = this.href;
+		}
+	})
+
+
+
+
+
 	// 主屏背景图 相关事件
 	function setMainImage (id) {
 		this.obj = $(id);
@@ -231,9 +253,9 @@
 	}
 
 	// 阻止移动端默认事件
-	/*document.addEventListener('touchstart', function (ev) {
+	document.addEventListener('touchstart', function (ev) {
 		ev.preventDefault();
-	})*/
+	})
 
 	var setImage = new setMainImage('#mainImagArea');
 	var mainIntroBox = new IntroBox('#centerBox .spanBox');
@@ -331,8 +353,8 @@
 	// page1
 	execPage.init({
 		data: [
-			'img/bg.jpg',
-			'img/bgWhite.jpg'
+			'img/bgWhite.jpg',
+			'img/bg.jpg'
 		],
 		showFn: function () {
 			$('#execBox').fadeIn(function () {
@@ -349,6 +371,7 @@
 							downEl = $('#sideBar a:last')
 						}
 						downEl.trigger('click.bar')
+						// scroll.clearInite();
 					},
 					down: function () {
 						if (canTab == false) {return false}
@@ -358,8 +381,10 @@
 							downEl = $('#sideBar a').eq(0)
 						}
 						downEl.trigger('click.bar')
+						// scroll.clearInite();
 					}
 				});
+				scroll.clearInite();
 			})
 		},
 		hideFn: function (title, infor) {
@@ -390,12 +415,13 @@
 
 
 	// 头部的点击事件
-	$('#header').on('click.menu', '.menu', function () {
+	$('#header').on('click.menu touchstart', '.menu', function () {
 		if(setImage.isReady()){
 			return false;
 		};
 		$('.menu').toggleClass('active');
 		window.location.hash = targetHash;
+		return false;
 	})
 
 
@@ -544,6 +570,33 @@
 	})
 
 
+		window.addEventListener("orientationchange", function() {
+			window.location.href = window.location.href;
+			switch (nowHash) {
+				case 'menu':
+
+					menuPage.rePos();
+					break;
+				case 'main':
+					setImage.rePos();
+					break;
+				case 'executive':
+				case 'suc':
+				case 'ad':
+					execPage.rePos();
+					// scroll.getInfor('#bar span');
+					break;
+				case 'contact':
+					contactPage.rePos();
+					break;
+				default:
+					// statements_def
+					break;
+			}
+		}, false);
+
+
+
 	var scroll = new scrollTool('#forBar');
 
 	// sideBar 的功能实现
@@ -562,19 +615,20 @@
 			tabStyle(index);
 			$('#execBox .title').html($(_this).html());
 			$('#execBox .artical').html(data.setLayOut(index));
-			$('#forBar').css({
+
+			/*$('#forBar').css({
 				transform: 'translateY(0px)'
 			})
 			$('#bar span').css({
 				transform: 'translateY(0px)'
 			})
-
+*/
 		});
 	})
 
 	function tabStyle (index) {
 		index%=2;
-		if(index) {
+		if(!index) {
 			$('.menu').removeClass('sonStyle');
 			$('#execBox').removeClass('conStyle1').addClass('conStyle2');
 			$('#sideBar').removeClass('whiteStyle').addClass('blueStyle');;
@@ -585,6 +639,37 @@
 		}
 	}
 
+ // $("body").height( $(window).height() );
+
+/*document.body.addEventListener('touchmove', function (event) {
+    event.preventDefault();
+}, false);
+*/
+/*function stopDrop() {
+    var lastY;//最后一次y坐标点
+    $(document.body).on('touchstart', function(event) {
+        lastY = event.originalEvent.changedTouches[0].clientY;//点击屏幕时记录最后一次Y度坐标。
+    });
+    $(document.body).on('touchmove', function(event) {
+        var y = event.originalEvent.changedTouches[0].clientY;
+        var st = $(this).scrollTop(); //滚动条高度
+        console.log("st = "+st);
+        if (y >= lastY && st <= 0) {//如果滚动条高度小于0，可以理解为到顶了，且是下拉情况下，阻止touchmove事件。
+            lastY = y;
+            event.preventDefault();
+        }
+        lastY = y;
+
+        //方法三
+        // var abc=$(document.body).scrollTop();
+        // console.log("abc = "+abc);
+        // if (abc>0) {
+        //   $(document.body).scrollTop(0);
+        // }
+    });
+}
+stopDrop();
+*/
 
 
 })()

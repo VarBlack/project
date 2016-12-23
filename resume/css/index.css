@@ -98,6 +98,24 @@ html {
     opacity: 1;
   }
 }
+#wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+#body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+}
+
 .btnIco:before {
   content: '';
   position: absolute;
@@ -421,13 +439,13 @@ html {
 
 #menuBox {
   position: absolute;
-  top: 30%;
+  top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, 0);
-  -moz-transform: translate(-50%, 0);
-  -ms-transform: translate(-50%, 0);
-  -o-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 80%;
   max-width: 475px;
   display: none;
@@ -749,6 +767,28 @@ html {
   transform: translateY(-43%);
 }
 
+#bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 0.5%;
+  transition: .5s;
+  max-width: 6px;
+  min-width: 3px;
+  border-radius: 6px;
+  opacity: 0;
+  background: #58a;
+}
+#bar span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 6px;
+  background: #fb3;
+}
+
 /* ---------------------- 閫傞厤 --------------------------- */
 @media screen and (max-width: 1410px) {
   #header .log {
@@ -893,6 +933,15 @@ html {
   }
 }
 @media screen and (max-width: 760px) {
+  #menuBox {
+    top: 30%;
+    -webkit-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+  }
+
   #header .log {
     top: 15px;
     left: 15px;

@@ -77,6 +77,19 @@ html {
 	}
 }
 
+#wrap {
+	position: absolute;
+	top: 0; left: 0;
+	bottom: 0; right: 0;
+	overflow: hidden;
+}
+#body {
+	position: absolute;
+	top: 0; left: 0;
+	bottom: 0; right: 0;
+	overflow: auto;
+}
+
 // 用于管理图标
 
 .btnIco:before {
@@ -349,9 +362,9 @@ html {
 
 #menuBox {
 	position: absolute;
-	top: 30%;
+	top: 50%;
 	left: 50%;
-	@include translate(-50%,  0);
+	@include translate(-50%,  -50%);
 	width: 80%;
 	max-width: 475px;
 	display: none;
@@ -690,6 +703,28 @@ html {
 	}
 }
 
+#bar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 0.5%;
+	transition: .5s;
+	max-width: 6px;
+	min-width: 3px;
+	border-radius: 6px;
+	opacity: 0;
+	background: #58a;
+	span {
+		position: absolute;
+		top: 0; left: 0;
+		width: 100%;
+		border-radius: 6px;
+		background: #fb3;
+	}
+}
+
+
 /* ---------------------- 适配 --------------------------- */
 
 
@@ -843,6 +878,10 @@ html {
 
 
 @media screen and (max-width: 760px) {
+	#menuBox {
+		top: 30%;
+		@include translate(-50%,  0);
+	}
 	#header {
 		.log {
 			// width: 30%;
@@ -906,6 +945,7 @@ html {
 }
 
 @media screen and (max-width: 560px) {
+	
 	#tabBtn {
 		.btn {
 			display: none;

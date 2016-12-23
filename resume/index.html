@@ -3,44 +3,39 @@
 <head>
 	<meta charset="UTF-8">
 	<title>resume</title>
-	<meta name="viewport" content="width = device-width, user-scalable = no, initial-scale = 1, minimum-scale = 1, maximum-scale = 1">
+	<meta name="viewport" content="width = device-width, user-scalable = no, initial-scale = 1, minimum-scale = 1, maximum-scale = 1,minimal-ui">
+
+
+
+
+<!-- 
+  <meta name="apple-mobile-web-app-title" content="yeziyuan" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta content="telephone=no" name="format-detection" /> -->
+  <meta name="full-screen" content="yes" />
+  <meta name="x5-fullscreen" content="true" />
+
+
+
+
+
+
+
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/index.css">
 	<link rel="stylesheet" href="ds/css/bootstrap.css">
+	<script src='js/scrollTool.js'></script>
 	<script src="js/data.js"></script>
 	<script src = 'js/jquery-3.1.1.js'></script>
 	<script src = 'js/tools.js'></script>
 	<script src="js/tool.js"></script>
 	<script src="js/miaov-transform.js"></script>
 	<script src="js/dealData.js"></script>
-	<script src='js/scrollTool.js'></script>
-	<style>
-		#bar {
-			position: absolute;
-			top: 0;
-			right: 0;
-			height: 100%;
-			width: 0.5%;
-			transition: .5s;
-			max-width: 6px;
-			min-width: 3px;
-			border-radius: 6px;
-			opacity: 0;
-			background: #58a;
-		}
-
-		#bar span {
-			position: absolute;
-			top: 0; left: 0;
-			width: 100%;
-			border-radius: 6px;
-			background: #fb3;
-		}
-	</style>
 </head>
 <body>
+<div id="wrap">
 	<header id="header">
-		<a class="log" href="index2.html">
+		<a class="log" href="index.html">
 			<img src="img/logo_color_476_180.jpg" alt="">
 		</a>
 		<div class="menu">
@@ -56,6 +51,7 @@
 		<div class="mainImage bg"></div>
 		<div class="mainImage face"></div>
 	</section>
+<div id="body">
 	<section id="centerBox">
 		<div id="tabBtn">
 			<div class="leftBtn btn btnLeftIco btnIco">
@@ -105,7 +101,7 @@
 			<a href="#page=contact">Contact Us</a>
 		</nav>
 	</section>
-	<section id="execBox" class="conInfor conStyle1">
+	<section id="execBox" class="conInfor conStyle2">
 	<section id="forBar">
 		<header>
 			<div class="spanBox">
@@ -160,7 +156,7 @@
 		</section>
 		</section>
 	</section>
-	<section id="contactPage" class="conInfor conStyle2">
+	<section id="contactPage" class="conInfor conStyle1">
 		<header>
 			<div class="spanBox">
 				<span></span>
@@ -215,6 +211,8 @@
 	<div id="bar">
 		<span></span>
 	</div>
+</div>
+</div>
 	<script src = 'js/index.js'></script>
 </body>
 </html>
