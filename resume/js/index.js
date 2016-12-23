@@ -6,19 +6,58 @@
 
 
 	// 隐藏地址栏  & 处理事件的时候 ，防止滚动条出现
-	window.addEventListener('load', function(){ 
-	        setTimeout(function(){ window.scrollTo(0,1); }, 100); 
-	});
+	// window.addEventListener('load', function(){ 
+	//         setTimeout(function(){ window.scrollTo(0,1); }, 100); 
+	// });
 
 
-	$('a').on('touchend', function (ev) {
-		if (ev.touchs.target.tagName.toLowerCase() == 'a') {
-			window.location = this.href;
-		}
+	// 阻止移动端默认事件
+	document.addEventListener('touchmove', function (ev) {
+		ev.preventDefault();
 	})
 
 
+	$('a').on('touchend', function (ev) {
+		// alert(1);
+		// if (ev.touchs.target.tagName.toLowerCase() == 'a') {
+			window.location = this.href;
+		// }
+	})
 
+	var myScroll = new IScroll('#execBox', {
+		    mouseWheel: true,
+		    scrollbars: true,
+		     probeType: 3
+		});
+
+	myScroll.on('scrollStart', function () {
+		$(this.indicators[0].indicator).animate({
+			opacity: 1
+		}, 500)
+		 if (this.y < -10) {
+			$('#header').fadeOut()
+		 }
+		// $('#header').fadeOut()
+	})
+	myScroll.on('scrollEnd', function () {
+		$(this.indicators[0].indicator).animate({
+			opacity: 0
+		}, 500)
+	})
+
+	// 检测：是否是移动端
+
+	var isMobile = false;//默认PC端
+	function mobile() {
+	    try{
+	        document.createEvent("TouchEvent");
+	        return true;
+	    }
+	    catch(e){
+	        return false;
+	    }
+	}
+	isMobile=mobile();
 
 
 	// 主屏背景图 相关事件
@@ -108,14 +147,6 @@
 					'min-width':_parHeight*this.setting.bgRota
 				});
 			};
-
-			// // 测试+
-			// if (_parWidth/this.setting.bgRota > _parHeight) {
-			// console.log(_parWidth/this.setting.bgRota)
-			// 	$('#mainImagArea').css({
-			// 		'min-height': _parWidth/this.setting.bgRota
-			// 	});
-			// };
 
 			_width = imgArea.find('div').width();
 
@@ -252,10 +283,6 @@
 		}
 	}
 
-	// 阻止移动端默认事件
-	document.addEventListener('touchstart', function (ev) {
-		ev.preventDefault();
-	})
 
 	var setImage = new setMainImage('#mainImagArea');
 	var mainIntroBox = new IntroBox('#centerBox .spanBox');
@@ -362,7 +389,43 @@
 					canTab = true;
 				});
 				execBox.showBox();
-				scroll.init('#bar span', {
+				 setTimeout(function () {
+			        myScroll.refresh();
+			    }, 0);
+
+				  myScroll.on('scroll', function () {
+					 if (isMobile) {
+					 	this.targetBottom = this.maxScrollY - 50;
+					 	this.targetTop = 50;
+					 } else {
+					 	this.targetBottom = this.maxScrollY;
+					 	this.targetTop = 0;
+					 }
+					 if (this.y >= -20) {
+						$('#header').fadeIn()
+					 }
+				  	if (this.y <= (this.targetBottom)) {
+				  		if (canTab == false) {return false}
+						canTab = false;
+						var downEl  = $('#sideBar a').filter('.active').next()
+						if (!(downEl.length)) {
+							downEl = $('#sideBar a').eq(0)
+						}
+						downEl.trigger('click.bar')
+				  	}
+				  	if (this.y >= this.targetTop) {
+				  		if (canTab == false) {return false}
+						canTab = false;
+						var downEl  = $('#sideBar a').filter('.active').next()
+						if (!(downEl.length)) {
+							downEl = $('#sideBar a').eq(0)
+						}
+						downEl.trigger('click.bar')
+				  	}
+				 });
+
+
+				/*scroll.init('#bar span', {
 					up: function () {
 						if (canTab == false) {return false}
 						canTab = false;
@@ -384,7 +447,7 @@
 						// scroll.clearInite();
 					}
 				});
-				scroll.clearInite();
+				scroll.clearInite();*/
 			})
 		},
 		hideFn: function (title, infor) {
@@ -416,6 +479,7 @@
 
 	// 头部的点击事件
 	$('#header').on('click.menu touchstart', '.menu', function () {
+
 		if(setImage.isReady()){
 			return false;
 		};
@@ -478,6 +542,8 @@
 	// 子主题切换
 
 	window.onhashchange = function () {
+
+
 		var hash = ff.getHash();
 		switch (hash) {
 			case 'menu':
@@ -520,6 +586,8 @@
 			default:
 				break;
 		}
+		
+
 	}
 
 	var mainAreaChange = {
@@ -547,6 +615,7 @@
 	// 当窗口大小调整的时候，调整背景相关设置
 
 	$(window).on('resize', function () {
+
 		switch (nowHash) {
 			case 'menu':
 				menuPage.rePos();
@@ -558,13 +627,11 @@
 			case 'suc':
 			case 'ad':
 				execPage.rePos();
-				// scroll.getInfor('#bar span');
 				break;
 			case 'contact':
 				contactPage.rePos();
 				break;
 			default:
-				// statements_def
 				break;
 		}
 	})
@@ -597,12 +664,10 @@
 
 
 
-	var scroll = new scrollTool('#forBar');
 
 	// sideBar 的功能实现
 
 	$('#sideBar').on('click.bar', 'a', function (ev) {
-		console.log(ev)
 		var _this = this;
 		var index = $(_this).index();
 		if ($(this).hasClass('active')) {
@@ -615,14 +680,9 @@
 			tabStyle(index);
 			$('#execBox .title').html($(_this).html());
 			$('#execBox .artical').html(data.setLayOut(index));
+			myScroll.scrollTo(0, 0);
 
-			/*$('#forBar').css({
-				transform: 'translateY(0px)'
-			})
-			$('#bar span').css({
-				transform: 'translateY(0px)'
-			})
-*/
+
 		});
 	})
 
@@ -638,6 +698,24 @@
 			$('#sideBar').removeClass('blueStyle').addClass('whiteStyle');
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  // $("body").height( $(window).height() );
 

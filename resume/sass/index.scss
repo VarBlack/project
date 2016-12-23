@@ -83,13 +83,6 @@ html {
 	bottom: 0; right: 0;
 	overflow: hidden;
 }
-#body {
-	position: absolute;
-	top: 0; left: 0;
-	bottom: 0; right: 0;
-	overflow: auto;
-}
-
 // 用于管理图标
 
 .btnIco:before {
@@ -428,7 +421,7 @@ html {
 	left: 0;
 	margin: 0 auto;
 	// @include transform(translateX(-50%));
-	width: 85%;
+	width: 100%;
 	max-width: 1100px;
 	header {
 		width: 80%;
@@ -444,6 +437,7 @@ html {
 		position: absolute;
 	}
 	.artical {
+		padding-bottom: 100px;
 		h2 {
 			font-weight: 600;
 			font-size: 20px;
@@ -454,9 +448,12 @@ html {
 	}
 }
 
+// #forBar {
+// 	position: absolute;
+// 	top: 0; left: 0;
+// }
 #forBar {
-	position: absolute;
-	top: 0; left: 0;
+	padding: 0 5px;
 }
 #execBox {
 	display: none;
@@ -858,6 +855,9 @@ html {
 }
 
 @media screen and (max-width: 1000px) {
+	#forBar {
+		padding: 0 50px;
+	}
 	#centerBox {
 		width: 80%;
 		/*  #infor {
@@ -909,6 +909,9 @@ html {
 		margin-left: 10%;
 		width: 85%;
 	}
+	#forBar {
+		padding: 0 10px;
+	}
 	#execBox {
 		.artical {
 			@include transform(translateX(0px));
@@ -920,7 +923,7 @@ html {
 			-webkit-box-pack: start;
 			flex-direction: column;
 			justify-content: flex-start;
-
+			// width: 90%;
 			animation: show;
 			animation-duration: 1s;
 			div {
@@ -929,7 +932,7 @@ html {
 		}
 	}
 	#execBox header{
-		width: 100%;
+		width: 90%;
 		max-width: 350px;
 		h1 {
 			font-size: 30px;
