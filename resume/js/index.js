@@ -16,14 +16,14 @@
 		ev.preventDefault();
 	})
 
-
-	$('a').on('touchend', function (ev) {
-		// alert(1);
-		// if (ev.touchs.target.tagName.toLowerCase() == 'a') {
-			window.location = this.href;
-		// }
-	})
-
+	if (isMobile) {
+		$('a').on('touchend', function (ev) {
+			// alert(1);
+			// if (ev.touchs.target.tagName.toLowerCase() == 'a') {
+				window.location = this.href;
+			// }
+		})
+	}
 	var myScroll = new IScroll('#execBox', {
 		    mouseWheel: true,
 		    scrollbars: true,
@@ -47,7 +47,7 @@
 
 	// 检测：是否是移动端
 
-	var isMobile = false;//默认PC端
+	/*var isMobile = false;//默认PC端
 	function mobile() {
 	    try{
 	        document.createEvent("TouchEvent");
@@ -57,8 +57,13 @@
 	        return false;
 	    }
 	}
-	isMobile=mobile();
+	isMobile=mobile();*/
 
+
+	var isMobile = false;
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	　　isMobile = true;
+	}
 
 	// 主屏背景图 相关事件
 	function setMainImage (id) {
@@ -98,6 +103,12 @@
 				'We are the ONLY retained firm that truly bets on our performance',
 				'Dramatically improves business performance outcomes by effectively leveraging people, processes, and technology',
 				'‘Disruptive Talent’ describes the brilliant individuals who think and act differently'
+			],
+			hash: [
+				'#page=executive',
+				'#page=ad',
+				'#page=suc',
+				'#page=contact'
 			]
 		};
 		this.init();
@@ -250,7 +261,9 @@
 				}, i*70, i);
 			});
 			// console.log(_this.setting.title[_this.nowIndex]);
-			_this.setting.hideFn && _this.setting.hideFn(_this.setting.title[_this.nowIndex],_this.setting.infor[_this.nowIndex]);
+			_this.setting.hideFn && _this.setting.hideFn(_this.setting.title[_this.nowIndex],
+				_this.setting.infor[_this.nowIndex],
+				_this.setting.hash[_this.nowIndex]);
 		}
 	};
 
@@ -290,14 +303,19 @@
 	// 初始化：添加 进入 移出 的回调函数，将内容区 和 背景关联起来
 	setImage.init ({
 		showFn: function (title) {
+			menuCanTab = true;
 			mainIntroBox.showBox();
 			$('#title').fadeIn(800);
 			$('#intro').fadeIn(800);
 		},
-		hideFn: function (title, infor) {
+		hideFn: function (title, infor, hash) {
 			mainIntroBox.hideBox();
 			$('#title').fadeOut(800, function () {
 				$('#title').html(title);
+				$('#intro .joinIco').attr({
+					href: hash
+				})
+
 			});
 			$('#intro').fadeOut(800, function () {
 				$('#intro p').html(infor)
@@ -339,7 +357,21 @@
 		ev.cancelBubble = true;
 	};
 
-
+	if (isMobile) {
+		var slideEv = new mobileTools();
+		slideEv.sildEvent({
+				'right':function () {
+					if (nowHash == 'main') {
+						$('.leftBtn').trigger('click');
+					}
+				},
+				'left': function () {
+					if (nowHash == 'main') {
+						$('.rightBtn').trigger('click');
+					}
+				}
+			});
+	}
 
 	// menu 点击事件
 
@@ -358,6 +390,8 @@
 	var contactBox = new IntroBox('#contactPage .spanBox');
 
 	var canTab = false;
+	// 为真可以进行menu 点击
+	var menuCanTab = true;
 
 	// 导航页
 
@@ -368,6 +402,7 @@
 		showFn: function () {
 			$('#menuBox').fadeIn(400, function () {
 				menuBox.showBox();
+				menuCanTab = true;
 			});
 		},
 		hideFn: function (title, infor) {
@@ -384,6 +419,7 @@
 			'img/bg.jpg'
 		],
 		showFn: function () {
+			menuCanTab = true;
 			$('#execBox').fadeIn(function () {
 				$('#sideBar').fadeIn(function () {
 					canTab = true;
@@ -392,17 +428,23 @@
 				 setTimeout(function () {
 			        myScroll.refresh();
 			    }, 0);
-
 				  myScroll.on('scroll', function () {
+				  	// console.log(isMobile)
 					 if (isMobile) {
-					 	this.targetBottom = this.maxScrollY - 50;
-					 	this.targetTop = 50;
+					 	this.targetBottom = this.maxScrollY - 30;
+					 	this.targetTop = 30;
 					 } else {
 					 	this.targetBottom = this.maxScrollY;
 					 	this.targetTop = 0;
 					 }
+					 // console.log(this.targetBottom, this.targetTop)
 					 if (this.y >= -20) {
 						$('#header').fadeIn()
+					 }
+					 if(this.y <= (this.targetBottom)+50){
+					 	$('#refrash').fadeIn()
+					 } else {
+					 	$('#refrash').fadeOut()
 					 }
 				  	if (this.y <= (this.targetBottom)) {
 				  		if (canTab == false) {return false}
@@ -464,6 +506,7 @@
 			'img/bgWhite.jpg'
 		],
 		showFn: function () {
+			menuCanTab = true;
 			$('#contactPage').fadeIn(function () {
 				contactBox.showBox();
 			})
@@ -479,16 +522,20 @@
 
 	// 头部的点击事件
 	$('#header').on('click.menu touchstart', '.menu', function () {
-
-		if(setImage.isReady()){
+		if(!menuCanTab){
 			return false;
 		};
+		menuCanTab = false;
 		$('.menu').toggleClass('active');
 		window.location.hash = targetHash;
 		return false;
 	})
 
-
+	$('#intro .joinIco').on('click touchstart', function () {
+		setImage.stopAutoPlay();
+		menuPage.now();
+		targetHash = 'main';
+	})
 
 
 	// menu 下导航相关
@@ -543,8 +590,8 @@
 
 	window.onhashchange = function () {
 
-
 		var hash = ff.getHash();
+
 		switch (hash) {
 			case 'menu':
 				$('#mainImagArea').addClass('bgBlue');
@@ -580,7 +627,7 @@
 				$('.menu').removeClass('sonStyle');
 				nowHash = 'contact';
 				contactPage.now();
-				$('#sideImg').fadeIn();
+				$('#sideImg').fadeIn(1000);
 				window.location.hash = '';
 				targetHash = 'menu';
 			default:
@@ -592,7 +639,7 @@
 
 	var mainAreaChange = {
 		in: function (mainData, newHash) {
-			console.log(newHash)
+			// console.log(newHash)
 			data = new dealData(mainData);
 			$('#execBox .title').html(data.getTitle()[0]);
 			$('#sideBar').html(data.setTitle())
@@ -637,30 +684,30 @@
 	})
 
 
-		window.addEventListener("orientationchange", function() {
-			window.location.href = window.location.href;
-			switch (nowHash) {
-				case 'menu':
+	window.addEventListener("orientationchange", function() {
+		window.location.href = window.location.href;
+		switch (nowHash) {
+			case 'menu':
 
-					menuPage.rePos();
-					break;
-				case 'main':
-					setImage.rePos();
-					break;
-				case 'executive':
-				case 'suc':
-				case 'ad':
-					execPage.rePos();
-					// scroll.getInfor('#bar span');
-					break;
-				case 'contact':
-					contactPage.rePos();
-					break;
-				default:
-					// statements_def
-					break;
-			}
-		}, false);
+				menuPage.rePos();
+				break;
+			case 'main':
+				setImage.rePos();
+				break;
+			case 'executive':
+			case 'suc':
+			case 'ad':
+				execPage.rePos();
+				// scroll.getInfor('#bar span');
+				break;
+			case 'contact':
+				contactPage.rePos();
+				break;
+			default:
+				// statements_def
+				break;
+		}
+	}, false);
 
 
 
@@ -681,6 +728,7 @@
 			$('#execBox .title').html($(_this).html());
 			$('#execBox .artical').html(data.setLayOut(index));
 			myScroll.scrollTo(0, 0);
+			$('#refrash').fadeOut()
 
 
 		});

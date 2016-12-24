@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src = 'mobile.js'></script>
+</head>
+<body>
+<script>
+console.log(mobileTools)
+	var abc = new mobileTools();
+	abc.sildEvent({
+		'up': function () {
+			alert('up');
+		},
+		'bottom': function () {
+			alert('bottom');
+		}
+	})
+	abc.sildEvent({
+		'up': function () {
+			alert('1p');
+		},
+		'bottom': function () {
+			alert('1om');
+		}
+	})
+
+</script>
+</body>
+</html>

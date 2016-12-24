@@ -448,10 +448,6 @@ html {
 	}
 }
 
-// #forBar {
-// 	position: absolute;
-// 	top: 0; left: 0;
-// }
 #forBar {
 	padding: 0 5px;
 }
@@ -466,17 +462,10 @@ html {
 		-webkit-box-pack: justify;
 		flex-direction: row;
 		justify-content: space-around;
-		/* column-count: 3;
-		-moz-column-count: 3;
-		-webkit-column-count: 3;
-		column-gap: 35px;
-		-moz-column-gap: 35px;
-		-webkit-column-gap: 35px; */
 		div {
 			width: 30%;
 		}
 		h2 {
-			// color: #28dde0;
 			font-weight: 600;
 			font-size: 20px;
 			line-height: 140%;
@@ -486,13 +475,19 @@ html {
 			margin-bottom: 20px;
 			font-size: 15px;
 			line-height: 120%;
-			// color: #fff;
-			// p {
 			text-indent: 2em;
 		}
 	}
 }
 
+#refrash {
+	position: absolute;
+	display: none;
+	left: 0;
+	bottom: 20px;
+	width: 100%;
+	text-align: center;
+}
 
 #contactPage {
 	display: none;
@@ -571,9 +566,6 @@ html {
 		}
 	}
 }
-
-
-
 
 
 .spanBox {
@@ -746,6 +738,7 @@ html {
 		}
 	}
 
+
 	#intro {
 		width: 320px;
 		font-size: 15px;
@@ -792,6 +785,15 @@ html {
 		}
 	}
 
+
+	#contactPage header{
+		width: 30%;
+		max-width: 540px;
+		h1 {
+			font-size: 50px;
+			line-height: 75px;
+		}
+	}
 	#sideBar {
 		a {
 			width: 8px;
@@ -852,6 +854,21 @@ html {
 			display: none;
 		}
 	}
+	#contactPage {
+		header{
+			width: 30%;
+			max-width: 540px;
+			margin-bottom: 50px;
+			h1 {
+				font-weight: 600;
+				font-size: 40px;
+				line-height: 65px;
+			}
+		}
+		.artical div {
+			width: 30%;
+		}
+	}
 }
 
 @media screen and (max-width: 1000px) {
@@ -910,7 +927,7 @@ html {
 		width: 85%;
 	}
 	#forBar {
-		padding: 0 10px;
+		padding: 0 50px;
 	}
 	#execBox {
 		.artical {
@@ -926,6 +943,7 @@ html {
 			// width: 90%;
 			animation: show;
 			animation-duration: 1s;
+			padding-bottom: 50px;
 			div {
 						width: 100%;
 			}
@@ -945,6 +963,33 @@ html {
 			display: none;
 		}
 	}
+
+	#contactPage {
+		header{
+			width: 50%;
+			max-width: 540px;
+			margin-bottom: 50px;
+			h1 {
+				font-weight: 600;
+				font-size: 40px;
+				line-height: 65px;
+			}
+		}
+		.artical {
+			flex-direction: column;
+			-webkit-box-orient: vertical;
+			-webkit-box-align: center;
+			align-items: center;
+			div {
+				width: 55%;
+				margin-bottom: 50px;
+			}
+		}
+	}
+
+	#sideImg {
+		opacity: 0;
+	}
 }
 
 @media screen and (max-width: 560px) {
@@ -959,6 +1004,25 @@ html {
 			display: none;
 		}
 	}
+	#execBox {
+		.artical {
+			padding-bottom: 30px;
+		}
+	}
+	#forBar {
+		padding: 0 30px;
+	}
+
+	#contactPage {
+		header{
+			width: 90%;
+		}
+		.artical {
+			div {
+				width: 90%;
+			}
+		}
+	}
 }
 
 @media screen and (max-width: 460px) {
@@ -970,7 +1034,6 @@ html {
 	}
 	#header {
 		.log {
-			// width: 30%;
 			height: 70px;
 		}
 	}

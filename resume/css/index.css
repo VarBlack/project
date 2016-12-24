@@ -551,12 +551,6 @@ html {
   -webkit-box-pack: justify;
   flex-direction: row;
   justify-content: space-around;
-  /* column-count: 3;
-  -moz-column-count: 3;
-  -webkit-column-count: 3;
-  column-gap: 35px;
-  -moz-column-gap: 35px;
-  -webkit-column-gap: 35px; */
 }
 #execBox .artical div {
   width: 30%;
@@ -572,6 +566,15 @@ html {
   font-size: 15px;
   line-height: 120%;
   text-indent: 2em;
+}
+
+#refrash {
+  position: absolute;
+  display: none;
+  left: 0;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
 }
 
 #contactPage {
@@ -847,6 +850,15 @@ html {
     line-height: 75px;
   }
 
+  #contactPage header {
+    width: 30%;
+    max-width: 540px;
+  }
+  #contactPage header h1 {
+    font-size: 50px;
+    line-height: 75px;
+  }
+
   #sideBar a {
     width: 8px;
     height: 8px;
@@ -904,6 +916,20 @@ html {
 
   #sideBar span {
     display: none;
+  }
+
+  #contactPage header {
+    width: 30%;
+    max-width: 540px;
+    margin-bottom: 50px;
+  }
+  #contactPage header h1 {
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 65px;
+  }
+  #contactPage .artical div {
+    width: 30%;
   }
 }
 @media screen and (max-width: 1000px) {
@@ -963,7 +989,7 @@ html {
   }
 
   #forBar {
-    padding: 0 10px;
+    padding: 0 50px;
   }
 
   #execBox .artical {
@@ -978,6 +1004,7 @@ html {
     justify-content: flex-start;
     animation: show;
     animation-duration: 1s;
+    padding-bottom: 50px;
   }
   #execBox .artical div {
     width: 100%;
@@ -995,6 +1022,31 @@ html {
   #sideBar a {
     display: none;
   }
+
+  #contactPage header {
+    width: 50%;
+    max-width: 540px;
+    margin-bottom: 50px;
+  }
+  #contactPage header h1 {
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 65px;
+  }
+  #contactPage .artical {
+    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: center;
+    align-items: center;
+  }
+  #contactPage .artical div {
+    width: 55%;
+    margin-bottom: 50px;
+  }
+
+  #sideImg {
+    opacity: 0;
+  }
 }
 @media screen and (max-width: 560px) {
   #tabBtn .btn {
@@ -1003,6 +1055,21 @@ html {
 
   .menu p {
     display: none;
+  }
+
+  #execBox .artical {
+    padding-bottom: 30px;
+  }
+
+  #forBar {
+    padding: 0 30px;
+  }
+
+  #contactPage header {
+    width: 90%;
+  }
+  #contactPage .artical div {
+    width: 90%;
   }
 }
 @media screen and (max-width: 460px) {
