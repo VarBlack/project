@@ -83,6 +83,19 @@ html {
 	bottom: 0; right: 0;
 	overflow: hidden;
 }
+
+
+#loadingPage {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: #58a;
+	z-index: 1000;
+}
+
+
+
+
 // 用于管理图标
 
 .btnIco:before {
@@ -241,13 +254,8 @@ html {
 	top: 42%; bottom: 0;
 	left: 0;
 	width: 100%;
-	// z-index: 0;
 }
 #centerBox {
-	// position: absolute;
-	// top: 42%;
-	// left: 50%;
-	// @include transform(translateX(-50%));
 	width: 70%;
 	max-width: 1100px;
 	margin: 0 auto;
@@ -369,20 +377,15 @@ html {
 	top: 30%; left: 0;
 	bottom: 0;
 	width: 100%;
-	// @include transform(translateY(-50%));
 }
 
 #menuBox {
 	position: relative;
 	top: -50px;
 	margin: auto;
-	/* position: absolute;
-	top: 50%;
-	left: 50%; */
 	width: 80%;
 	max-width: 475px;
 	display: none;
-	// opacity: 0;
 	a {
 		display: block;
 		line-height: 45px;
@@ -511,6 +514,7 @@ html {
 }
 
 #contactPage {
+	position: static;
 	display: none;
 	width: 100%;
 	max-width: 1100px;
@@ -651,10 +655,8 @@ html {
 		display: block;
 		margin-bottom: 32px;
 		width: 12px; height: 12px;
-		// border: 2px solid #28dde0;
 		border-radius: 50%;
 		transition: .3s;
-		// color: #28dde0;
 		span {
 			position: absolute;
 			top: 0; right: 100%;
@@ -663,7 +665,6 @@ html {
 			font-size: 14px;
 			white-space: nowrap;
 			transition: .3s;
-			// color: #28dde0;
 			opacity: 0.4;
 		}
 		&:hover {
@@ -673,7 +674,6 @@ html {
 		}
 	}
 	.active {
-		// background: #28dde0;
 		span {
 			opacity: 1 !important;
 		}
@@ -898,9 +898,6 @@ html {
 	}
 	#centerBox {
 		width: 80%;
-		/*  #infor {
-			height: 75px;
-		} */
 		h1 {
 			font-size: 50px;
 			line-height: 95px;
@@ -918,11 +915,9 @@ html {
 @media screen and (max-width: 760px) {
 	#menuBox {
 		top: 30%;
-		// @include translate(-50%,  0);
 	}
 	#header {
 		.log {
-			// width: 30%;
 			top: 15px;
 			left: 15px;
 		}

@@ -1,6 +1,8 @@
 (function () {
 
-
+	window.onload = function () {
+		$('#loadingPage').fadeOut();
+	}
 
 	var isMobile = false;
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -354,16 +356,6 @@
 	setImage.autoPlay();
 
 
-	// 右边按钮，进入下一张
-/*	$('.rightBtn').click(function () {
-		if(setImage.isReady()){
-			return false;
-		};
-		setImage.stopAutoPlay();
-		setImage.next();
-		setImage.autoPlay();
-	});*/
-
 
 	$('.rightBtn').on('click touchstart',function () {
 		if(setImage.isReady()){
@@ -374,15 +366,6 @@
 		setImage.autoPlay();
 	});
 
-	// 左边按钮，进入下一张
-	// $('.leftBtn').click(function () {
-	// 	if(setImage.isReady()){
-	// 		return false;
-	// 	};
-	// 	setImage.stopAutoPlay();
-	// 	setImage.prev();
-	// 	setImage.autoPlay();
-	// });
 
 	$('.leftBtn').on('click touchstart', function () {
 		if(setImage.isReady()){
@@ -441,6 +424,7 @@
 			'img/bg.jpg'
 		],
 		showFn: function () {
+			centerBoxScroll.scrollTo(0, 0);
 			$('#menuBox').fadeIn(400, function () {
 				menuBox.showBox();
 				menuCanTab = true;
@@ -510,29 +494,6 @@
 				 });
 
 
-				/*scroll.init('#bar span', {
-					up: function () {
-						if (canTab == false) {return false}
-						canTab = false;
-						var downEl  = $('#sideBar a').filter('.active').prev()
-						if (!(downEl.length)) {
-							downEl = $('#sideBar a:last')
-						}
-						downEl.trigger('click.bar')
-						// scroll.clearInite();
-					},
-					down: function () {
-						if (canTab == false) {return false}
-						canTab = false;
-						var downEl  = $('#sideBar a').filter('.active').next()
-						if (!(downEl.length)) {
-							downEl = $('#sideBar a').eq(0)
-						}
-						downEl.trigger('click.bar')
-						// scroll.clearInite();
-					}
-				});
-				scroll.clearInite();*/
 			})
 		},
 		hideFn: function (title, infor) {
@@ -552,6 +513,8 @@
 			menuCanTab = true;
 			$('#contactPage').fadeIn(function () {
 				contactBox.showBox();
+				centerBoxScroll.scrollTo(0, 0);
+				centerBoxScroll.refresh()
 			})
 		},
 		hideFn: function (title, infor) {
@@ -654,6 +617,7 @@
 				$('#menuBox').fadeOut(600,function () {
 					setImage.now(function () {
 						$('#centerBox').fadeIn();
+						centerBoxScroll.scrollTo(0, 0);
 						centerBoxScroll.refresh()
 					});
 					setImage.autoPlay();
@@ -732,12 +696,6 @@
 
 
 	window.addEventListener("orientationchange", function() {
-		// alert(window.orientation)
-		// if (window.orientation !== 0) {
-		// 	$('#header .log').css({
-		// 		display: 'none'
-		// 	})
-		// }
 		window.location.href = window.location.href;
 		switch (nowHash) {
 			case 'menu':
@@ -751,13 +709,11 @@
 			case 'suc':
 			case 'ad':
 				execPage.rePos();
-				// scroll.getInfor('#bar span');
 				break;
 			case 'contact':
 				contactPage.rePos();
 				break;
 			default:
-				// statements_def
 				break;
 		}
 	}, false);

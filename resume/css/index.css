@@ -107,6 +107,14 @@ html {
   overflow: hidden;
 }
 
+#loadingPage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #58a;
+  z-index: 1000;
+}
+
 .btnIco:before {
   content: '';
   position: absolute;
@@ -441,9 +449,6 @@ html {
   position: relative;
   top: -50px;
   margin: auto;
-  /* position: absolute;
-  top: 50%;
-  left: 50%; */
   width: 80%;
   max-width: 475px;
   display: none;
@@ -585,6 +590,7 @@ html {
 }
 
 #contactPage {
+  position: static;
   display: none;
   width: 100%;
   max-width: 1100px;
@@ -946,9 +952,6 @@ html {
 
   #centerBox {
     width: 80%;
-    /*  #infor {
-    	height: 75px;
-    } */
   }
   #centerBox h1 {
     font-size: 50px;
