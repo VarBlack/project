@@ -19,9 +19,9 @@
 		ev.preventDefault();
 	})
 
-	/*$(window).on('touchstart', function (ev) {
+	$(window).on('touchstart', function (ev) {
 		console.log(ev.target)
-	})*/
+	})
 	if (isMobile) {
 		var target, old;
 		$('a').on('touchstart', function (ev) {
@@ -40,11 +40,18 @@
 	var myScroll = new IScroll('#execBox', {
 	    mouseWheel: true,
 	    scrollbars: true,
+	    hScroll: false,
 	     probeType: 3
 	});
 
-	var mainScroll = new IScroll('#mainScroll', {
+	/*var mainScroll = new IScroll('#mainScroll', {
 	    mouseWheel: true,
+	    hScroll: false,
+	});*/
+
+	var centerBoxScroll = new IScroll('#centerBoxScroll', {
+	    mouseWheel: true,
+	    hScroll: false,
 	});
 
 	myScroll.on('scrollStart', function () {
@@ -313,6 +320,7 @@
 	var setImage = new setMainImage('#mainImagArea');
 	var mainIntroBox = new IntroBox('#centerBox .spanBox');
 
+
 	// 初始化：添加 进入 移出 的回调函数，将内容区 和 背景关联起来
 	setImage.init ({
 		showFn: function (title) {
@@ -347,7 +355,17 @@
 
 
 	// 右边按钮，进入下一张
-	$('.rightBtn').click(function () {
+/*	$('.rightBtn').click(function () {
+		if(setImage.isReady()){
+			return false;
+		};
+		setImage.stopAutoPlay();
+		setImage.next();
+		setImage.autoPlay();
+	});*/
+
+
+	$('.rightBtn').on('click touchstart',function () {
 		if(setImage.isReady()){
 			return false;
 		};
@@ -357,7 +375,16 @@
 	});
 
 	// 左边按钮，进入下一张
-	$('.leftBtn').click(function () {
+	// $('.leftBtn').click(function () {
+	// 	if(setImage.isReady()){
+	// 		return false;
+	// 	};
+	// 	setImage.stopAutoPlay();
+	// 	setImage.prev();
+	// 	setImage.autoPlay();
+	// });
+
+	$('.leftBtn').on('click touchstart', function () {
 		if(setImage.isReady()){
 			return false;
 		};
@@ -367,6 +394,7 @@
 	});
 
 	centerBox.onclick = function (ev) {
+
 		ev.cancelBubble = true;
 	};
 
@@ -416,12 +444,13 @@
 			$('#menuBox').fadeIn(400, function () {
 				menuBox.showBox();
 				menuCanTab = true;
-				mainScroll.refresh();
+				centerBoxScroll.refresh();
 			});
 		},
 		hideFn: function (title, infor) {
 			menuBox.hideBox();
 			$('#centerBox').fadeOut(400)
+
 		}
 	});
 
@@ -624,7 +653,8 @@
 				nowHash = 'main';
 				$('#menuBox').fadeOut(600,function () {
 					setImage.now(function () {
-						$('#centerBox').fadeIn()
+						$('#centerBox').fadeIn();
+						centerBoxScroll.refresh()
 					});
 					setImage.autoPlay();
 				});
