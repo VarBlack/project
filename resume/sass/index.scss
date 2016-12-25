@@ -234,6 +234,9 @@ html {
 		}
 	}
 }
+
+
+
 #centerBox {
 	position: absolute;
 	top: 42%;
@@ -353,11 +356,20 @@ html {
 	}
 }
 
-#menuBox {
+
+#mainScroll {
 	position: absolute;
+	top: 30%; left: 0;
+	bottom: 0;
+	width: 100%;
+	// @include transform(translateY(-50%));
+}
+
+#menuBox {
+	margin: auto;
+	/* position: absolute;
 	top: 50%;
-	left: 50%;
-	@include translate(-50%,  -50%);
+	left: 50%; */
 	width: 80%;
 	max-width: 475px;
 	display: none;

@@ -2,7 +2,10 @@
 
 
 
-
+	var isMobile = false;
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	　　isMobile = true;
+	}
 
 
 	// 隐藏地址栏  & 处理事件的时候 ，防止滚动条出现
@@ -16,19 +19,33 @@
 		ev.preventDefault();
 	})
 
+	/*$(window).on('touchstart', function (ev) {
+		console.log(ev.target)
+	})*/
 	if (isMobile) {
-		$('a').on('touchend', function (ev) {
-			// alert(1);
-			// if (ev.touchs.target.tagName.toLowerCase() == 'a') {
-				window.location = this.href;
-			// }
+		var target, old;
+		$('a').on('touchstart', function (ev) {
+			target = ev.target;
+			$('a').on('touchmove', function (ev) {
+				target = null;
+			});
+			$('a').on('touchend', function (ev) {
+				old = ev.target;
+				if (target == old) {
+					window.location = this.href;
+				}
+			})
 		})
 	}
 	var myScroll = new IScroll('#execBox', {
-		    mouseWheel: true,
-		    scrollbars: true,
-		     probeType: 3
-		});
+	    mouseWheel: true,
+	    scrollbars: true,
+	     probeType: 3
+	});
+
+	var mainScroll = new IScroll('#mainScroll', {
+	    mouseWheel: true,
+	});
 
 	myScroll.on('scrollStart', function () {
 		$(this.indicators[0].indicator).animate({
@@ -37,7 +54,6 @@
 		 if (this.y < -10) {
 			$('#header').fadeOut()
 		 }
-		// $('#header').fadeOut()
 	})
 	myScroll.on('scrollEnd', function () {
 		$(this.indicators[0].indicator).animate({
@@ -60,10 +76,7 @@
 	isMobile=mobile();*/
 
 
-	var isMobile = false;
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-	　　isMobile = true;
-	}
+	
 
 	// 主屏背景图 相关事件
 	function setMainImage (id) {
@@ -403,6 +416,7 @@
 			$('#menuBox').fadeIn(400, function () {
 				menuBox.showBox();
 				menuCanTab = true;
+				mainScroll.refresh();
 			});
 		},
 		hideFn: function (title, infor) {
@@ -539,7 +553,10 @@
 
 
 	// menu 下导航相关
-
+	/*$('#mainScroll').click(function () {
+		alert(1);
+		
+	})*/
 	$('#menuBox nav a').click(function () {
 		var _this = this;
 		$('#menuBox nav a').removeClass('active');
@@ -685,6 +702,12 @@
 
 
 	window.addEventListener("orientationchange", function() {
+		// alert(window.orientation)
+		// if (window.orientation !== 0) {
+		// 	$('#header .log').css({
+		// 		display: 'none'
+		// 	})
+		// }
 		window.location.href = window.location.href;
 		switch (nowHash) {
 			case 'menu':
